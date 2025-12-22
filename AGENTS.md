@@ -1,7 +1,3 @@
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 ## Overview
 
 This repository contains a Lua-based WezTerm terminal emulator configuration for OS-nixCfg. It uses Nix flakes for development environment management and includes pre-commit hooks for code quality.
