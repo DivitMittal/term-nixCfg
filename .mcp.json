@@ -11,9 +11,8 @@
         "--context",
         "claude-code",
         "--project",
-        "~/Projects/Cfs/TermEmulator-Cfg/"
-      ],
-      "env": {}
+        "~/Projects/Cfgs/TermEmulator-Cfg/"
+      ]
     }
   }
 }
