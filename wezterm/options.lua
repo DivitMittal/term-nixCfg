@@ -3,7 +3,7 @@ return function(wezterm, config)
   config.enable_kitty_graphics = true
 
   -- font
-  config.font = wezterm.font "CaskaydiaCove NFM"
+  config.font = wezterm.font "CaskaydiaCove Nerd Font Mono"
   config.font_size = 20
   config.adjust_window_size_when_changing_font_size = false
   config.custom_block_glyphs = false
