@@ -14,7 +14,7 @@ return function(wezterm, config)
   }
 
   -- appearance
-  config.window_close_confirmation = "NeverPrompt"
+  config.window_close_confirmation = "AlwaysPrompt"
   config.colors = {
     foreground = "silver",
     background = "black",
