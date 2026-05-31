@@ -15,14 +15,9 @@ return function(wezterm, config)
 
   -- appearance
   config.window_close_confirmation = "AlwaysPrompt"
-  config.colors = {
-    foreground = "silver",
-    background = "black",
-    --cursor
-    cursor_bg = "red",
-    cursor_fg = "silver",
-    cursor_border = "silver",
-  }
+  -- Color scheme is rendered into $XDG_CONFIG_HOME/wezterm/colors/cyberpunk.toml
+  -- by OS-nixCfg (home/gui/emulators/wezterm.nix) from lib/palette.nix.
+  config.color_scheme = "cyberpunk"
   config.default_cursor_style = "SteadyBar"
   config.initial_cols = 100
   config.initial_rows = 40
@@ -33,7 +28,8 @@ return function(wezterm, config)
     bottom = 0,
   }
   config.native_macos_fullscreen_mode = false
-  config.window_background_opacity = 0.90
+  -- Matches stylix.opacity.terminal in OS-nixCfg/lib/palette.nix.
+  config.window_background_opacity = 0.85
   config.window_decorations = "RESIZE"
   config.enable_scroll_bar = false
 
