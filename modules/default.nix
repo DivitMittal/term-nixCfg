@@ -12,14 +12,15 @@
     default = {
       imports = [
         (inputs.import-tree ./home)
+        (inputs.import-tree ../config/home)
         workmux
       ];
     };
 
     ## Individual imports (for selective usage)
     tmux = import ./home/multiplexers/tmux/tmux.nix;
-    zellij = import ./home/multiplexers/zellij.nix;
-    screen = import ./home/multiplexers/screen.nix;
+    zellij = import ../config/home/multiplexers/zellij.nix;
+    screen = import ../config/home/multiplexers/screen.nix;
     inherit workmux;
   };
 }

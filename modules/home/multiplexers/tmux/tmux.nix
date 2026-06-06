@@ -1,22 +1,25 @@
-{pkgs, ...}: let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.programs.tmux;
   oh-my-tmux = pkgs.fetchFromGitHub {
     owner = "gpakosz";
     repo = ".tmux";
     rev = "af33f07134b76134acca9d01eacbdecca9c9cda6";
     hash = "sha256-nXm664l84YSwZeRM4Hsweqgz+OlpyfwXcgEdyNGhaGA=";
   };
-  enable = false;
 in {
-  programs.tmux = {
-    inherit enable;
-    package = pkgs.tmux;
+  options.programs.tmux.oh-my-tmux = {
+    enable = lib.mkEnableOption "oh-my-tmux configuration preset";
   };
-  xdg.configFile."tmux/tmux.conf" = {
-    inherit enable;
-    source = oh-my-tmux + "/.tmux.conf";
-  };
-  xdg.configFile."tmux/tmux.conf.local" = {
-    inherit enable;
-    source = ./tmux.conf.local;
+
+  config = lib.mkIf cfg.oh-my-tmux.enable {
+    xdg.configFile = {
+      "tmux/tmux.conf".source = oh-my-tmux + "/.tmux.conf";
+      "tmux/tmux.conf.local".source = ./tmux.conf.local;
+    };
   };
 }
