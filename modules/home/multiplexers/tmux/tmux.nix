@@ -14,12 +14,16 @@
 in {
   options.programs.tmux.oh-my-tmux = {
     enable = lib.mkEnableOption "oh-my-tmux configuration preset";
+    localConfig = lib.mkOption {
+      type = lib.types.path;
+      description = "Path to the tmux.conf.local override file";
+    };
   };
 
   config = lib.mkIf cfg.oh-my-tmux.enable {
     xdg.configFile = {
       "tmux/tmux.conf".source = oh-my-tmux + "/.tmux.conf";
-      "tmux/tmux.conf.local".source = ./tmux.conf.local;
+      "tmux/tmux.conf.local".source = cfg.oh-my-tmux.localConfig;
     };
   };
 }
