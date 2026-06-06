@@ -6,7 +6,10 @@
   in
     mkFlake {inherit inputs;} ({inputs, ...}: {
       systems = builtins.import inputs.systems;
-      imports = [(inputs.import-tree ./flake)];
+      imports = [
+        (inputs.import-tree ./flake)
+        ./modules
+      ];
     });
 
   inputs = {
@@ -34,5 +37,7 @@
       };
     };
     import-tree.url = "github:vic/import-tree";
+    llm-agents.url = "github:numtide/llm-agents.nix";
+    # Don't follow nixpkgs: some llm-agents packages need newer nixpkgs features
   };
 }
