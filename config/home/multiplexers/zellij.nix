@@ -1,15 +1,10 @@
-{
-  config,
-  lib,
-  ...
-}: let
-  cfg = config.programs.zellij;
-in {
-  config = lib.mkIf cfg.enable {
-    programs.zellij = {
-      enableFishIntegration = false;
-      enableZshIntegration = false;
-      enableBashIntegration = false;
-    };
+{pkgs, ...}: {
+  programs.zellij = {
+    enable = true;
+    package = pkgs.zellij;
+
+    enableFishIntegration = false;
+    enableZshIntegration = false;
+    enableBashIntegration = false;
   };
 }

@@ -1,12 +1,9 @@
-{
-  config,
-  lib,
-  ...
-}: let
-  cfg = config.programs.screen;
-in {
-  config = lib.mkIf cfg.enable {
-    programs.screen.screenrc = ''
+{pkgs, ...}: {
+  programs.screen = {
+    enable = true;
+    package = pkgs.screen;
+
+    screenrc = ''
       # GNU Screen run commands configuration
       # the following two lines give a two-line status, with the current window highlighted
       hardstatus alwayslastline
