@@ -33,6 +33,10 @@ return function(wezterm, config)
   config.window_decorations = "RESIZE"
   config.enable_scroll_bar = false
 
+  -- mux server (required for workmux wezterm backend)
+  config.unix_domains = { { name = "unix" } }
+  config.default_gui_startup_args = { "connect", "unix" }
+
   -- hyperlink
   config.hyperlink_rules = {
     {
