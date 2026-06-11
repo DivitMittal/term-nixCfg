@@ -1,4 +1,4 @@
-## Overview
+## Project Overview
 
 This repository contains a Lua-based WezTerm terminal emulator configuration for OS-nixCfg. It uses Nix flakes for development environment management and includes pre-commit hooks for code quality.
 
@@ -48,3 +48,9 @@ All modules contribute to a shared global table `M` which serves as the WezTerm 
 Two WezTerm plugins are used:
 1. **smart-splits.nvim** - Seamless navigation between WezTerm panes and Neovim splits
 2. **tabline.wez** - Enhanced tab bar with custom sections and theming
+
+### AI Agent Tooling
+
+Two tools from `llm-agents.nix` are installed via `config/home/workmux.nix`:
+- **workmux** - Git worktree + multiplexer window manager; configured to use WezTerm as its backend (`WORKMUX_BACKEND=wezterm`)
+- **herdr** - Terminal workspace manager for AI coding agents
