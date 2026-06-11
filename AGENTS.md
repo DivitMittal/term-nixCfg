@@ -1,56 +1,60 @@
-## Project Overview
+# AGENTS.md
 
-This repository contains a Lua-based WezTerm terminal emulator configuration for OS-nixCfg. It uses Nix flakes for development environment management and includes pre-commit hooks for code quality.
+This file provides guidance to AI coding agents when working with code in this repository.
 
-## Development Environment
+## What This Repo Is
 
-This project uses Nix flakes with direnv for automatic environment setup.
+A Nix flake that manages two terminal emulator configurations — **WezTerm** (pure Lua) and **Kitty** — plus terminal multiplexers (tmux, zellij, screen). Configuration files live under `emulators/` and are wired into the user's XDG config directory by a home-manager module in `config/`.
 
-### Setup
+## Common Commands
+
 ```bash
-# Development environment activates automatically via direnv
-# Or manually enter with:
-nix develop
+nix fmt          # Format all Nix (alejandra + deadnix + statix) and Lua (stylua) files
+nix flake check  # Run all checks; required before committing
+nix develop      # Enter devshell (auto-activated via direnv)
 ```
 
-### Key Commands
+There are no tests beyond `nix flake check`. Run it after any change.
 
-**Formatting:**
-```bash
-# Format all code (Nix and Lua)
-nix fmt
+## Architecture
+
+### Flake structure
+
+`flake.nix` uses **flake-parts** and **import-tree** to auto-import every `.nix` file under `flake/`, `modules/`, and `config/`. Adding a `.nix` file in those directories is enough — no explicit import needed.
+
+```
+flake/
+  devshells.nix     devshell with nixd, alejandra, stylua; installs pre-commit hooks
+  formatters.nix    treefmt config (alejandra, deadnix, statix, stylua)
+  checks.nix        pre-commit hooks (trim whitespace, large-file guard, merge-conflict detection…)
+  actions/          GitHub Actions workflows via actions-nix
+config/
+  default.nix       exposes flake.homeManagerConfigurations.{Cfg,default}
+  setup.nix         imports import-tree ./home and the flake homeManagerModule
+  home/             home-manager modules (wezterm.nix, multiplexers/…)
+emulators/
+  wezterm/          pure-Lua WezTerm config
+  kitty/            Kitty conf files
 ```
 
-**Checks:**
-```bash
-# Run all flake checks
-nix flake check
-```
+### How emulator files reach the system
 
-## Code Architecture
+`config/home/wezterm.nix` explicitly enumerates each Lua filename and maps it to `xdg.configFile."wezterm/<file>"`. It also renders a `colors/cyberpunk.toml` at build time from the shared color palette imported from `OS-nixCfg`. The Lua files themselves are **not** installed via a recursive symlink — each must be listed in the `weztermFiles` list in that module when a new file is added.
 
-### WezTerm Configuration Structure
+### Color scheme coupling
 
-The WezTerm configuration is modular, split across multiple Lua files in the `wezterm/` directory:
+WezTerm's `cyberpunk` color scheme and the `window_background_opacity` value in `emulators/wezterm/options.lua` are derived from `OS-nixCfg/lib/palette.nix`. If opacity changes, update **both** `options.lua` (`config.window_background_opacity`) and the palette. The TOML is rendered automatically by home-manager; never edit `colors/cyberpunk.toml` manually.
 
-- **`wezterm.lua`**: Entry point that requires all other modules and returns the configuration table `M`
-- **`config.lua`**: Core appearance and behavior settings (font, colors, window settings, hyperlink rules)
-- **`binds.lua`**: Key bindings including leader key configuration (CTRL+r), pane splitting, and navigation
-- **`smartSplits.lua`**: Integration with smart-splits.nvim plugin for seamless pane navigation (CTRL+Arrow to move, ALT+Arrow to resize)
-- **`tabline.lua`**: Custom tab bar using the tabline.wez plugin with Dracula theme, showing mode, workspace, hostname, and domain
+Kitty's theme is included via `include current-theme.conf` at the bottom of `kitty.conf`. The active theme name is annotated with `# BEGIN_KITTY_THEME / # END_KITTY_THEME` markers.
 
-### Global Table Convention
+### WezTerm Lua module convention
 
-All modules contribute to a shared global table `M` which serves as the WezTerm configuration object. The global `W` variable holds the `wezterm` module reference.
+Each Lua module under `emulators/wezterm/` exports a single function `(wezterm, config) -> nil` that mutates the shared `config` table in-place. `wezterm.lua` calls them in order: `options` → `binds` → `smartSplits` → `tabline`.
 
-### Plugin Integration
+### Multiplexers
 
-Two WezTerm plugins are used:
-1. **smart-splits.nvim** - Seamless navigation between WezTerm panes and Neovim splits
-2. **tabline.wez** - Enhanced tab bar with custom sections and theming
+tmux, zellij, and screen are managed as home-manager modules under `config/home/multiplexers/`. tmux uses **oh-my-tmux** with a local override at `config/home/multiplexers/tmux/tmux.conf.local`.
 
-### AI Agent Tooling
+## Related Repository
 
-Two tools from `llm-agents.nix` are installed via `config/home/workmux.nix`:
-- **workmux** - Git worktree + multiplexer window manager; configured to use WezTerm as its backend (`WORKMUX_BACKEND=wezterm`)
-- **herdr** - Terminal workspace manager for AI coding agents
+[DivitMittal/OS-nixCfg](https://github.com/DivitMittal/OS-nixCfg) — provides the base16 color palette (`lib/palette.nix`) and the `homeManagerModules.default` consumed by `config/setup.nix`.

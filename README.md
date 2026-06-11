@@ -24,10 +24,26 @@
 </div>
 
 ---
-This repository consists of:
+This repository manages terminal emulator and multiplexer configurations as a [Nix flake](https://nixos.wiki/wiki/Flakes), consumed by [OS-nixCfg](https://github.com/DivitMittal/OS-nixCfg) via home-manager.
 
-- A pure [lua](https://lua.org) [WezTerm](https://github.com/wez/wezterm) terminal emulator configuration for [OS-nixCfg](https://github.com/DivitMittal/OS-nixCfg)
-- [Kitty](https://github.com/kovidgoyal/kitty) terminal emulator configuration & its custom theme
+## Contents
+
+| Directory | Description |
+|---|---|
+| `emulators/wezterm/` | Pure-Lua [WezTerm](https://github.com/wez/wezterm) config (font, bindings, smart-splits, tabline) |
+| `emulators/kitty/` | [Kitty](https://github.com/kovidgoyal/kitty) config and custom theme |
+| `config/` | home-manager modules that install the above into `$XDG_CONFIG_HOME` |
+| `flake/` | Dev environment, formatters, pre-commit hooks, and CI actions |
+
+Multiplexers managed: **tmux** (oh-my-tmux), **zellij**, **screen**.
+
+## Development
+
+```bash
+nix develop   # enter devshell (auto-activated via direnv)
+nix fmt       # format Nix (alejandra + deadnix + statix) and Lua (stylua)
+nix flake check
+```
 
 ## Related Repositories
 
