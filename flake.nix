@@ -1,5 +1,5 @@
 {
-  description = "TermEmulator-Cfg's flake";
+  description = "term-nixCfg's flake";
 
   outputs = inputs: let
     inherit (inputs.flake-parts.lib) mkFlake;

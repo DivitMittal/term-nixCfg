@@ -12,7 +12,7 @@
   }: {
     devshells.default = {
       devshell = rec {
-        name = "TermEmulator-Cfg";
+        name = "term-nixCfg";
         motd = "{202}Welcome to {91}${name} {202}devshell!{reset} \n $(menu)";
         startup = {
           git-hooks.text = ''
