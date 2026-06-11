@@ -20,10 +20,10 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.oh-my-tmux.enable {
-    xdg.configFile = {
-      "tmux/tmux.conf".source = oh-my-tmux + "/.tmux.conf";
-      "tmux/tmux.conf.local".source = cfg.oh-my-tmux.localConfig;
-    };
+  config = lib.mkIf (cfg.enable && cfg.oh-my-tmux.enable) {
+    # Source oh-my-tmux via extraConfig so programs.tmux manages tmux.conf
+    # and conventional HM options (terminal, historyLimit, etc.) can coexist.
+    programs.tmux.extraConfig = "source-file ${oh-my-tmux}/.tmux.conf";
+    xdg.configFile."tmux/tmux.conf.local".source = cfg.oh-my-tmux.localConfig;
   };
 }

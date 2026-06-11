@@ -5,10 +5,11 @@
     inherit (inputs.flake-parts.lib) mkFlake;
   in
     mkFlake {inherit inputs;} ({inputs, ...}: {
-      systems = builtins.import inputs.systems;
+      systems = import inputs.systems;
       imports = [
         (inputs.import-tree ./flake)
         ./modules
+        ./config
       ];
     });
 
@@ -37,7 +38,5 @@
       };
     };
     import-tree.url = "github:vic/import-tree";
-    llm-agents.url = "github:numtide/llm-agents.nix";
-    # Don't follow nixpkgs: some llm-agents packages need newer nixpkgs features
   };
 }
