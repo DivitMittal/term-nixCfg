@@ -1,6 +1,9 @@
-# AGENTS.md
+---
+description: Project knowledge for WezTerm, Kitty, and terminal multiplexer Nix configuration
+applyTo: "**"
+---
 
-This file provides guidance to AI coding agents when working with code in this repository.
+# Project Knowledge
 
 ## What This Repo Is
 
