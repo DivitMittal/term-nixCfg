@@ -1,0 +1,22 @@
+name: term-nixcfg
+version: 1.0.0
+description: Nix flake managing WezTerm and Kitty terminal configs plus tmux/zellij/screen multiplexers
+author: DivitMittal
+target: all
+type: instructions
+
+dependencies:
+  mcp:
+    - name: serena
+      registry: false
+      transport: stdio
+      command: uvx
+      args:
+        - --from
+        - git+https://github.com/oraios/serena
+        - serena
+        - start-mcp-server
+        - --context
+        - claude-code
+        - --project
+        - ~/Projects/Cfgs/TermEmulator-Cfg/
