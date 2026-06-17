@@ -1,10 +1,8 @@
 {
   pkgs,
-  inputs,
+  base16Scheme,
   ...
 }: let
-  palette = import "${inputs.OS-nixCfg}/lib/palette.nix" {inherit pkgs;};
-  inherit (palette) base16Scheme;
 
   # Render a wezterm color scheme TOML from the shared palette.
   # See https://wezterm.org/config/appearance.html#defining-your-own-colors
