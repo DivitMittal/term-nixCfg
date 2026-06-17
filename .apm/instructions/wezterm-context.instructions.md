@@ -1,6 +1,7 @@
-# AGENTS.md
-
-This file provides guidance to AI coding agents when working with code in this repository.
+---
+description: Context for emulators/wezterm/ — Lua module layout, key bindings, plugins, color scheme
+applyTo: "emulators/wezterm/**"
+---
 
 ## Module Layout
 

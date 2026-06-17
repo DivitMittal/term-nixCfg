@@ -28,6 +28,8 @@
             alejandra
             ## Lua
             stylua
+            ## AI context
+            apm-cli
             ;
         };
       };

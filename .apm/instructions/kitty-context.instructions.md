@@ -1,6 +1,7 @@
-# AGENTS.md
-
-This file provides guidance to AI coding agents when working with code in this repository.
+---
+description: Context for emulators/kitty/ — config files, notable settings, theme management
+applyTo: "emulators/kitty/**"
+---
 
 ## Files
 

@@ -45,6 +45,10 @@ nix fmt       # format Nix (alejandra + deadnix + statix) and Lua (stylua)
 nix flake check
 ```
 
+## For AI Agents
+
+Context files (`AGENTS.md`, `CLAUDE.md`) are generated — not committed. Run `apm compile` before exploring the repo to get directory-level guidance.
+
 ## Related Repositories
 
 - [DivitMittal/OS-nixCfg](https://github.com/DivitMittal/OS-nixCfg): Main Nix configurations repository

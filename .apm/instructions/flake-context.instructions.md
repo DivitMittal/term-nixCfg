@@ -1,6 +1,7 @@
-# AGENTS.md
-
-This file provides guidance to AI coding agents when working with code in this repository.
+---
+description: Context for the flake/ directory — formatters, checks, devshell, CI actions
+applyTo: "flake/**"
+---
 
 ## Import Convention
 
