@@ -2,7 +2,10 @@ name: term-nixcfg
 version: 1.0.0
 description: Nix flake managing WezTerm and Kitty terminal configs plus tmux/zellij/screen multiplexers
 author: DivitMittal
-target: all
+target:
+  - claude
+  - codex
+  - opencode
 type: instructions
 
 dependencies:

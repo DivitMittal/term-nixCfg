@@ -1,0 +1,32 @@
+lockfile_version: '1'
+generated_at: '2026-06-17T10:59:46.629994+00:00'
+dependencies: []
+mcp_servers:
+- serena
+mcp_configs:
+  serena:
+    name: serena
+    transport: stdio
+    args:
+    - --from
+    - git+https://github.com/oraios/serena
+    - serena
+    - start-mcp-server
+    - --context
+    - claude-code
+    - --project
+    - ~/Projects/Cfgs/TermEmulator-Cfg/
+    registry: false
+    command: uvx
+local_deployed_files:
+- .claude/rules/config-context.md
+- .claude/rules/flake-context.md
+- .claude/rules/kitty-context.md
+- .claude/rules/project-knowledge.md
+- .claude/rules/wezterm-context.md
+local_deployed_file_hashes:
+  .claude/rules/config-context.md: sha256:efc1166b9038d600a1093a66b95ac3eb59ae4ab4596c903c1e448350b2c70dc9
+  .claude/rules/flake-context.md: sha256:050af73d0523bb5034aa777105906e7c1698a6bdfe65d9f1557c90b4d39bc339
+  .claude/rules/kitty-context.md: sha256:f90726816e1d6bd66493a3b1a905ce36ca769aed7b2a99f9bce37d3328ea6225
+  .claude/rules/project-knowledge.md: sha256:ef64647c766ef7c897abca73da245c730856e458253d9b97b043d14b5a55d093
+  .claude/rules/wezterm-context.md: sha256:f420d5f6f1f3af461a24f751411e90f204605e1186825909854709aeab9c93f0
