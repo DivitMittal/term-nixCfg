@@ -20,6 +20,7 @@ result-*
 apm_modules/
 .codex/
 .claude/
+.opencode/
 .mcp.json
 opencode.json
 AGENTS.md
