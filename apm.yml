@@ -22,4 +22,4 @@ dependencies:
         - --context
         - claude-code
         - --project
-        - ~/Projects/Cfgs/TermEmulator-Cfg/
+        - ~/Projects/Cfgs/term-nixCfg/
