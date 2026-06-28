@@ -8,7 +8,6 @@
       systems = import inputs.systems;
       imports = [
         (inputs.import-tree ./flake)
-        ./modules
         ./config
       ];
     });
@@ -38,5 +37,12 @@
       };
     };
     import-tree.url = "github:vic/import-tree";
+    # tmux-fzf (sainnhe/tmux-fzf) has no nixpkgs package, so it is vendored as a
+    # tmux plugin via mkTmuxPlugin in config/home/multiplexers/tmux.nix. Fetched as
+    # a non-flake input so it is tracked in flake.lock and bumps on `nix flake update`.
+    tmux-fzf = {
+      url = "github:sainnhe/tmux-fzf";
+      flake = false;
+    };
   };
 }

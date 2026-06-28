@@ -8,11 +8,11 @@ applyTo: "config/**"
 ```
 config/
   default.nix        flake output: homeManagerConfigurations.{Cfg, default}
-  setup.nix          home-manager profile: import-tree ./home + flake homeManagerModule
+  setup.nix          home-manager profile: imports config/home via import-tree
   home/
     wezterm.nix      installs WezTerm + renders cyberpunk color scheme
     multiplexers/
-      tmux/          tmux via oh-my-tmux, vi keys, mouse enabled
+      tmux.nix       native programs.tmux (vi keys, mouse, themed status, plugins)
       zellij.nix     zellij (shell integrations all disabled)
       screen.nix     GNU screen
 ```
@@ -31,4 +31,4 @@ Drop a `.nix` file anywhere under `config/home/`. The `import-tree` call in `set
 
 ## Multiplexers
 
-tmux uses **oh-my-tmux** with its local config override at `tmux/tmux.conf.local`. Settings applied via home-manager options (base index, history limit, key mode, mouse) take effect in the generated tmux.conf that oh-my-tmux sources. Extend tmux behavior by editing `tmux.conf.local`, not `tmux.nix` options.
+tmux is configured entirely through native `programs.tmux` options in `multiplexers/tmux.nix`: typed settings (terminal, base index, history limit, key mode, mouse, escape time), `programs.tmux.plugins` (resurrect/jump/open, plus `tmux-fzf` vendored via `mkTmuxPlugin` from the `tmux-fzf` flake input), and a static status line + key bindings in `extraConfig`. There is no sourced third-party config or `tmux.conf.local` — extend tmux by editing `tmux.nix`.

@@ -23,7 +23,7 @@ There are no tests beyond `nix flake check`. Run it after any change.
 
 ### Flake structure
 
-`flake.nix` uses **flake-parts** and **import-tree** to auto-import every `.nix` file under `flake/`, `modules/`, and `config/`. Adding a `.nix` file in those directories is enough — no explicit import needed.
+`flake.nix` uses **flake-parts** and **import-tree** to auto-import every `.nix` file under `flake/` and `config/`. Adding a `.nix` file in those directories is enough — no explicit import needed.
 
 ```
 flake/
@@ -33,7 +33,7 @@ flake/
   actions/          GitHub Actions workflows via actions-nix
 config/
   default.nix       exposes flake.homeManagerConfigurations.{Cfg,default}
-  setup.nix         imports import-tree ./home and the flake homeManagerModule
+  setup.nix         imports config/home via import-tree (the home-manager profile)
   home/             home-manager modules (wezterm.nix, multiplexers/…)
 emulators/
   wezterm/          pure-Lua WezTerm config
@@ -56,8 +56,8 @@ Each Lua module under `emulators/wezterm/` exports a single function `(wezterm, 
 
 ### Multiplexers
 
-tmux, zellij, and screen are managed as home-manager modules under `config/home/multiplexers/`. tmux uses **oh-my-tmux** with a local override at `config/home/multiplexers/tmux/tmux.conf.local`.
+tmux, zellij, and screen are managed as home-manager modules under `config/home/multiplexers/`. tmux is configured entirely through native `programs.tmux` options in `multiplexers/tmux.nix` (typed settings, `programs.tmux.plugins`, and a static status line + bindings in `extraConfig`); `tmux-fzf` is vendored via `mkTmuxPlugin` from the `tmux-fzf` flake input.
 
 ## Related Repository
 
-[DivitMittal/OS-nixCfg](https://github.com/DivitMittal/OS-nixCfg) — provides the base16 color palette (`lib/palette.nix`) and the `homeManagerModules.default` consumed by `config/setup.nix`.
+[DivitMittal/OS-nixCfg](https://github.com/DivitMittal/OS-nixCfg) — provides the base16 color palette (`lib/palette.nix`) used by WezTerm's `cyberpunk` color scheme.

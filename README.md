@@ -35,7 +35,7 @@ This repository manages terminal emulator and multiplexer configurations as a [N
 | `config/` | home-manager modules that install the above into `$XDG_CONFIG_HOME` |
 | `flake/` | Dev environment, formatters, pre-commit hooks, and CI actions |
 
-Multiplexers managed: **tmux** (oh-my-tmux), **zellij**, **screen**.
+Multiplexers managed: **tmux** (native home-manager), **zellij**, **screen**.
 
 ## Development
 
