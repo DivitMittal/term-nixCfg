@@ -1,4 +1,8 @@
-{ lib, pkgs, ... }:
+{
+  lib,
+  pkgs,
+  ...
+}:
 lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
   programs.macos-terminal = {
     enable = true;
