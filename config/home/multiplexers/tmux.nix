@@ -1,7 +1,7 @@
 {
   pkgs,
   lib,
-  inputs,
+  termInputs,
   ...
 }: let
   # OS clipboard command for copy-mode yank.
@@ -14,11 +14,15 @@
   # is lock-managed and bumps with `nix flake update`. Its `main.tmux` entrypoint
   # self-locates via BASH_SOURCE and binds prefix+F, so it runs cleanly from the
   # Nix store under home-manager's run-shell (no tpm required).
+  #
+  # NB: read via `termInputs` (not `inputs`): a consuming flake's `extraSpecialArgs`
+  # shadows/conflicts with `_module.args.inputs`, but leaves our uniquely-named arg
+  # intact. See config/setup.nix for the full rationale.
   tmux-fzf = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "tmux-fzf";
     rtpFilePath = "main.tmux";
     version = "0-unstable-2025-09-24";
-    src = inputs.tmux-fzf;
+    src = termInputs.tmux-fzf;
     meta = {
       homepage = "https://github.com/sainnhe/tmux-fzf";
       description = "Tmux key bindings for fzf";
