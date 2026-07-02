@@ -66,6 +66,13 @@ return function(wezterm, config)
       action = act.ActivateCopyMode,
     },
 
+    -- workspace chooser
+    {
+      mods = "LEADER",
+      key = "w",
+      action = act.ShowLauncherArgs({ flags = "WORKSPACE" }),
+    },
+
     -- C-S-l activates the debug overlay (implemented by default)
   }
 end
