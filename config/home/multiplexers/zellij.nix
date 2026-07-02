@@ -3,19 +3,7 @@
   pkgs,
   ...
 }: let
-  harpoonPlugin = pkgs.fetchurl {
-    pname = "zellij-harpoon";
-    version = "0.3.0";
-    url = "https://github.com/Nacho114/harpoon/releases/download/v0.3.0/harpoon.wasm";
-    hash = "sha256-5CqgYx4FzNr2f4NvV2qQ89vEeBKd6iG/NrRLa6O1CmY=";
-  };
-
-  verticalTabsPlugin = pkgs.fetchurl {
-    pname = "zellij-vertical-tabs";
-    version = "0.1.0";
-    url = "https://github.com/cfal/zellij-vertical-tabs/releases/download/v0.1.0/zellij-vertical-tabs.wasm";
-    hash = "sha256-BJljSyS1JMsdfDsbx2wUj2IXCPQnk51LNaF6Sc7U0xw=";
-  };
+  sources = pkgs.callPackage ../../../pkgs/_sources/generated.nix {};
 in {
   programs.zellij = {
     enable = true;
@@ -84,7 +72,7 @@ in {
 
   # Keep plugin paths stable for zellij's permission prompts.
   xdg.configFile = {
-    "zellij/plugins/harpoon.wasm".source = harpoonPlugin;
-    "zellij/plugins/vertical-tabs.wasm".source = verticalTabsPlugin;
+    "zellij/plugins/harpoon.wasm".source = sources.zellij-harpoon.src;
+    "zellij/plugins/vertical-tabs.wasm".source = sources.zellij-vertical-tabs.src;
   };
 }

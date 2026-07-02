@@ -34,6 +34,7 @@ This repository manages terminal emulator and multiplexer configurations as a [N
 | `emulators/kitty/` | [Kitty](https://github.com/kovidgoyal/kitty) config and custom theme |
 | `config/` | home-manager modules that install the above into `$XDG_CONFIG_HOME` |
 | `flake/` | Dev environment, formatters, pre-commit hooks, and CI actions |
+| `pkgs/` | nvfetcher-managed external package sources |
 
 Multiplexers managed: **tmux** (native home-manager), **zellij**, **screen**.
 
@@ -41,6 +42,7 @@ Multiplexers managed: **tmux** (native home-manager), **zellij**, **screen**.
 
 ```bash
 nix develop   # enter devshell (auto-activated via direnv)
+pkgs-update   # refresh nvfetcher-generated package sources
 nix fmt       # format Nix (alejandra + deadnix + statix) and Lua (stylua)
 nix flake check
 ```
