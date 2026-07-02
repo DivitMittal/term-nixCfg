@@ -1,0 +1,32 @@
+{
+    "zellij-harpoon": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "zellij-harpoon",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-f4z1enHx27vRFTN6MWOHgNfhjpuHbe8cgclwGIyqMvI=",
+            "type": "url",
+            "url": "https://github.com/Nacho114/harpoon/releases/download/v0.3.0/harpoon.wasm"
+        },
+        "version": "v0.3.0"
+    },
+    "zellij-vertical-tabs": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "zellij-vertical-tabs",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-UxCRtWqzvAAIvRTeGfcZheOrhYURDuAh747kE1ViAqI=",
+            "type": "url",
+            "url": "https://github.com/cfal/zellij-vertical-tabs/releases/download/v0.1.0/zellij-vertical-tabs.wasm"
+        },
+        "version": "v0.1.0"
+    }
+}

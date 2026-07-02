@@ -5,13 +5,14 @@ Contributions are welcome — bug reports, fixes, and improvements to the termin
 ## Setup
 
 ```sh
-nix develop   # enter dev shell (nixd, alejandra, stylua)
+nix develop   # enter dev shell (nixd, alejandra, stylua, nvfetcher)
 ```
 
 ## Guidelines
 
 - **Nix files**: format with `alejandra` (enforced by pre-commit)
 - **Lua files**: format with `stylua` (enforced by pre-commit)
+- Update external package sources with `pkgs-update` when changing `pkgs/nvfetcher.toml`
 - Run `nix flake check` before submitting — CI runs the same check
 - Test changes on the target platform (macOS or Linux) since emulator availability varies
 
