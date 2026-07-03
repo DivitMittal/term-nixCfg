@@ -40,6 +40,27 @@ in {
           }
         ];
       };
+
+      keybinds.tmux._children = [
+        {
+          bind = {
+            _args = ["v"];
+            _children = [
+              {NewPane = "Right";}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["-"];
+            _children = [
+              {NewPane = "Down";}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+      ];
     };
 
     layouts.vertical-tabs-left = {

@@ -4,20 +4,11 @@
   termInputs,
   ...
 }: let
-  # OS clipboard command for copy-mode yank.
   clipCmd =
     if pkgs.stdenv.hostPlatform.isDarwin
     then "pbcopy"
     else "wl-copy";
 
-  # tmux-fzf has no nixpkgs package; vendor it from the flake input so the source
-  # is lock-managed and bumps with `nix flake update`. Its `main.tmux` entrypoint
-  # self-locates via BASH_SOURCE and binds prefix+F, so it runs cleanly from the
-  # Nix store under home-manager's run-shell (no tpm required).
-  #
-  # NB: read via `termInputs` (not `inputs`): a consuming flake's `extraSpecialArgs`
-  # shadows/conflicts with `_module.args.inputs`, but leaves our uniquely-named arg
-  # intact. See config/setup.nix for the full rationale.
   tmux-fzf = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "tmux-fzf";
     rtpFilePath = "main.tmux";
@@ -35,27 +26,31 @@ in {
     enable = true;
     package = pkgs.tmux;
 
-    # ── core settings (these are now authoritative, not overridden by oh-my-tmux) ──
+    # ── core settings
     terminal = "tmux-256color";
     baseIndex = 1; # windows and panes numbered from 1
     historyLimit = 50000;
     keyMode = "vi";
     mouse = true;
     escapeTime = 0;
+    prefix = "C-a";
     focusEvents = true;
     sensibleOnTop = true; # tmux-sensible defaults, sourced first
     customPaneNavigationAndResize = true; # prefix h/j/k/l + H/J/K/L resize
     resizeAmount = 5;
 
-    # ── plugins (declarative; replaces oh-my-tmux's tpm loader) ──
+    # ── plugins
     plugins = with pkgs.tmuxPlugins; [
       {
         plugin = resurrect;
         extraConfig = "set -g @resurrect-capture-pane-contents 'on'";
       }
+      # prefix+C-s save, prefix+C-r restore
       jump
+      # prefix+j regex jump
       open
-      tmux-fzf # binds prefix+F itself
+      # prefix+o highlight/open URLs
+      tmux-fzf # prefix+F fzf session/window/pane picker
     ];
 
     extraConfig = ''
@@ -64,9 +59,8 @@ in {
       set -g allow-passthrough on
       set -ga update-environment "TERM TERM_PROGRAM"
 
-      # ── keep both prefixes (oh-my-tmux added C-a as a second prefix) ──
-      set -g prefix2 C-a
-      bind C-a send-prefix -2
+      # ── prefix is C-a exclusively (set via home-manager option above) ──
+      unbind C-b
 
       # ── status line (static rewrite of the green/yellow oh-my-tmux theme) ──
       set -g status-position top
@@ -79,17 +73,14 @@ in {
       set -g status-left-length 40
       set -g status-right-length 80
 
-      # ── bindings ported from the former tmux.conf.local ──
-      bind n new-session
-      unbind c
-      bind t new-window -c "#{pane_current_path}"
+      # ── splits (vim-style) ──
+      bind v split-window -h -c "#{pane_current_path}"
       bind - split-window -v -c "#{pane_current_path}"
-      bind | split-window -h -c "#{pane_current_path}"
-      bind Tab next-window
-      bind BTab previous-window
+
+      # ── misc ──
       bind r source-file ~/.config/tmux/tmux.conf \; display "Reloaded"
 
-      # ── copy mode + OS clipboard ──
+      # ── copy mode: v begin selection, y yank to OS clipboard ──
       set -g set-clipboard on
       bind -T copy-mode-vi v send -X begin-selection
       bind -T copy-mode-vi y send -X copy-pipe-and-cancel "${clipCmd}"
