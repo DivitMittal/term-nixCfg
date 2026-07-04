@@ -70,7 +70,7 @@ return function(wezterm, config)
     {
       mods = "LEADER",
       key = "w",
-      action = act.ShowLauncherArgs({ flags = "WORKSPACE" }),
+      action = act.ShowLauncherArgs { flags = "WORKSPACE" },
     },
 
     -- C-S-l activates the debug overlay (implemented by default)
