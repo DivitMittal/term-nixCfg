@@ -14,7 +14,7 @@ in {
     enableBashIntegration = false;
 
     settings = {
-      default_layout = "vertical-tabs-left";
+      default_layout = "vertical-tabs-right";
 
       plugins = {
         harpoon._props.location = "file:${config.xdg.configHome}/zellij/plugins/harpoon.wasm";
@@ -63,12 +63,13 @@ in {
       ];
     };
 
-    layouts.vertical-tabs-left = {
+    layouts.vertical-tabs-right = {
       layout._children = [
         {
           pane = {
             split_direction = "vertical";
             _children = [
+              {pane = {};}
               {
                 pane = {
                   size = 18;
@@ -76,7 +77,6 @@ in {
                   plugin.location = "vertical-tabs";
                 };
               }
-              {pane = {};}
             ];
           };
         }
