@@ -14,6 +14,7 @@ in {
     enableBashIntegration = false;
 
     settings = {
+      show_startup_tips = false;
       default_layout = "vertical-tabs-right";
 
       plugins = {
