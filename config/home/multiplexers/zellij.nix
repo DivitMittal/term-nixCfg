@@ -183,6 +183,11 @@ in {
         vertical-tabs._props.location = "file:${config.xdg.configHome}/zellij/plugins/vertical-tabs.wasm";
       };
 
+      # Leader for tmux-style keybinds (keybinds.tmux below).
+      # Override the zellij default (Ctrl b) since terminal emulators and
+      # readline also claim Ctrl a for "go to start of line".
+      keybinds.leader = "Ctrl a";
+
       keybinds.shared_except = {
         _args = ["locked"];
         _children = [
