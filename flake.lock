@@ -156,7 +156,6 @@
         "import-tree": "import-tree",
         "nixpkgs": "nixpkgs",
         "systems": "systems",
-        "tmux-fzf": "tmux-fzf",
         "treefmt-nix": "treefmt-nix"
       }
     },
@@ -172,22 +171,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
-        "type": "github"
-      }
-    },
-    "tmux-fzf": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1758721802,
-        "narHash": "sha256-ay7z0MkeDCpxdwNTKFrkxi/hUE7a5K7P7oFhfn94aLA=",
-        "owner": "sainnhe",
-        "repo": "tmux-fzf",
-        "rev": "05af76daa2487575b93a4f604693b00969f19c2f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "sainnhe",
-        "repo": "tmux-fzf",
         "type": "github"
       }
     },

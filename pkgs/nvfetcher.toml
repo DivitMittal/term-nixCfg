@@ -5,3 +5,10 @@ fetch.url = "https://github.com/Nacho114/harpoon/releases/download/$ver/harpoon.
 [zellij-vertical-tabs]
 src.github_tag = "cfal/zellij-vertical-tabs"
 fetch.url = "https://github.com/cfal/zellij-vertical-tabs/releases/download/$ver/zellij-vertical-tabs.wasm"
+
+# No tagged releases; tracks master HEAD. Vendored tmux plugin via
+# `pkgs.tmuxPlugins.mkTmuxPlugin` in config/home/multiplexers/tmux.nix.
+# Pin with `src.manual = "<sha>"` if reproducibility matters more than freshness.
+[tmux-fzf]
+src.git = "https://github.com/sainnhe/tmux-fzf"
+fetch.github = "sainnhe/tmux-fzf"

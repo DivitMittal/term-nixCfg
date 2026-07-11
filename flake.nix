@@ -37,12 +37,8 @@
       };
     };
     import-tree.url = "github:vic/import-tree";
-    # tmux-fzf (sainnhe/tmux-fzf) has no nixpkgs package, so it is vendored as a
-    # tmux plugin via mkTmuxPlugin in config/home/multiplexers/tmux.nix. Fetched as
-    # a non-flake input so it is tracked in flake.lock and bumps on `nix flake update`.
-    tmux-fzf = {
-      url = "github:sainnhe/tmux-fzf";
-      flake = false;
-    };
+    # tmux-fzf (sainnhe/tmux-fzf) is now vendored through pkgs/nvfetcher.toml
+    # instead of a flake input — see pkgs/_sources/generated.nix and
+    # config/home/multiplexers/tmux.nix (`sources.tmux-fzf.src`).
   };
 }

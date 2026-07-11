@@ -1,4 +1,25 @@
 {
+    "tmux-fzf": {
+        "cargoLock": null,
+        "date": "2025-09-24",
+        "extract": null,
+        "name": "tmux-fzf",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "sainnhe",
+            "repo": "tmux-fzf",
+            "rev": "05af76daa2487575b93a4f604693b00969f19c2f",
+            "sha256": "sha256-ay7z0MkeDCpxdwNTKFrkxi/hUE7a5K7P7oFhfn94aLA=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "05af76daa2487575b93a4f604693b00969f19c2f"
+    },
     "zellij-harpoon": {
         "cargoLock": null,
         "date": null,

@@ -1,9 +1,10 @@
 {
   pkgs,
   lib,
-  termInputs,
   ...
 }: let
+  sources = pkgs.callPackage ../../../pkgs/_sources/generated.nix {};
+
   clipCmd =
     if pkgs.stdenv.hostPlatform.isDarwin
     then "pbcopy"
@@ -12,8 +13,8 @@
   tmux-fzf = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "tmux-fzf";
     rtpFilePath = "main.tmux";
-    version = "0-unstable-2025-09-24";
-    src = termInputs.tmux-fzf;
+    version = "0-unstable-${sources.tmux-fzf.date}";
+    src = sources.tmux-fzf.src;
     meta = {
       homepage = "https://github.com/sainnhe/tmux-fzf";
       description = "Tmux key bindings for fzf";
