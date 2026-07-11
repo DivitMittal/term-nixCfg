@@ -37,7 +37,7 @@ in {
     prefix = "C-a";
     focusEvents = true;
     sensibleOnTop = true; # tmux-sensible defaults, sourced first
-    customPaneNavigationAndResize = true; # prefix h/j/k/l + H/J/K/L resize
+    customPaneNavigationAndResize = false; # avoid qwerty hjkl/HJKL bindings
     resizeAmount = 5;
 
     # ── plugins
@@ -74,12 +74,77 @@ in {
       set -g status-left-length 40
       set -g status-right-length 80
 
-      # ── splits (vim-style) ──
+      # ── splits ──
       bind v split-window -h -c "#{pane_current_path}"
       bind - split-window -v -c "#{pane_current_path}"
 
+      # ── inner-mux heuristic: tab/window actions ──
+      # Bare Ctrl/Alt arrows are reserved for WezTerm + smart-splits.nvim.
+      unbind-key -q ,
+      unbind-key -q &
+      unbind-key -q C-n
+      unbind-key -q C-p
+      bind c new-window -c "#{pane_current_path}"
+      bind r command-prompt -I "#W" "rename-window %%"
+      bind d kill-window
+      bind n next-window
+      bind p previous-window
+
+      # ── inner-mux heuristic: workspace/session actions ──
+      bind C new-session
+      bind R command-prompt -I "#S" "rename-session %%"
+      bind D kill-session
+      bind N switch-client -n
+      bind P switch-client -p
+
+      # ── inner-mux heuristic: indexed tab/window jump (1-9, 0 → 10) ──
+      bind 1 select-window -t :1
+      bind 2 select-window -t :2
+      bind 3 select-window -t :3
+      bind 4 select-window -t :4
+      bind 5 select-window -t :5
+      bind 6 select-window -t :6
+      bind 7 select-window -t :7
+      bind 8 select-window -t :8
+      bind 9 select-window -t :9
+      bind 0 select-window -t :10
+
+      # ── inner-mux heuristic: prefix + plain arrows for panes ──
+      bind Left select-pane -L
+      bind Down select-pane -D
+      bind Up select-pane -U
+      bind Right select-pane -R
+
+      # ── alt+ navigation layer (prefix-free) ──
+      # Mirrors the prefix mnemonic scheme but without needing C-a, so tab and
+      # workspace switching are one chord. Bare Alt+Arrow stays owned by
+      # WezTerm + smart-splits.nvim (resize), so letters are used here.
+      bind -n M-c new-window -c "#{pane_current_path}"
+      bind -n M-r command-prompt -I "#W" "rename-window %%"
+      bind -n M-d kill-window
+      bind -n M-n next-window
+      bind -n M-p previous-window
+      bind -n M-1 select-window -t :1
+      bind -n M-2 select-window -t :2
+      bind -n M-3 select-window -t :3
+      bind -n M-4 select-window -t :4
+      bind -n M-5 select-window -t :5
+      bind -n M-6 select-window -t :6
+      bind -n M-7 select-window -t :7
+      bind -n M-8 select-window -t :8
+      bind -n M-9 select-window -t :9
+      bind -n M-0 select-window -t :10
+      bind -n M-C new-session
+      bind -n M-R command-prompt -I "#S" "rename-session %%"
+      bind -n M-D kill-session
+      bind -n M-N switch-client -n
+      bind -n M-P switch-client -p
+
       # ── misc ──
-      bind r source-file ~/.config/tmux/tmux.conf \; display "Reloaded"
+      # C-r reloads ~/.config/tmux/tmux.conf (which re-sources tmux.conf.local
+      # via oh-my-tmux). F5 was the previous choice but WezTerm can intercept
+      # function keys, silently killing the binding.
+      bind C-r source-file ~/.config/tmux/tmux.conf \; display "Reloaded"
 
       # ── copy mode: v begin selection, y yank to OS clipboard ──
       set -g set-clipboard on

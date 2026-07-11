@@ -183,14 +183,33 @@ in {
         vertical-tabs._props.location = "file:${config.xdg.configHome}/zellij/plugins/vertical-tabs.wasm";
       };
 
-      # Leader for tmux-style keybinds (keybinds.tmux below).
-      # Override the zellij default (Ctrl b) since terminal emulators and
-      # readline also claim Ctrl a for "go to start of line".
-      keybinds.leader = "Ctrl a";
+      # Leader for tmux-style keybinds (keybinds.tmux below). Zellij 0.44
+      # models this as a normal binding into tmux mode, not a `leader` node.
+
+      keybinds.normal._children = [
+        {
+          unbind._args = [
+            "Alt Left"
+            "Alt Right"
+            "Alt Up"
+            "Alt Down"
+            "Alt h"
+            "Alt l"
+            "Alt j"
+            "Alt k"
+          ];
+        }
+      ];
 
       keybinds.shared_except = {
         _args = ["locked"];
         _children = [
+          {
+            bind = {
+              _args = ["Ctrl a"];
+              _children = [{SwitchToMode = "Tmux";}];
+            };
+          }
           {
             bind = {
               _args = ["Ctrl y"];
@@ -205,10 +224,197 @@ in {
               ];
             };
           }
+
+          # ── alt+ navigation layer (prefix-free) ──
+          # Mirrors the Ctrl-a + mnemonic scheme but fires without entering a
+          # mode, so tab/session switching is one chord. Bare Alt+Arrow is
+          # owned by WezTerm + smart-splits.nvim (resize), so letters are used.
+          # Lowercase = tabs, uppercase = sessions (see alt+ session layer
+          # below for the workspace → session-manager mapping).
+          {
+            bind = {
+              _args = ["Alt c"];
+              _children = [{NewTab = {};} {SwitchToMode = "Normal";}];
+            };
+          }
+          {
+            bind = {
+              _args = ["Alt r"];
+              _children = [{SwitchToMode = "RenameTab";} {TabNameInput = 0;}];
+            };
+          }
+          {
+            bind = {
+              _args = ["Alt d"];
+              _children = [{CloseTab = {};} {SwitchToMode = "Normal";}];
+            };
+          }
+          {
+            bind = {
+              _args = ["Alt n"];
+              _children = [{GoToNextTab = {};} {SwitchToMode = "Normal";}];
+            };
+          }
+          {
+            bind = {
+              _args = ["Alt p"];
+              _children = [{GoToPreviousTab = {};} {SwitchToMode = "Normal";}];
+            };
+          }
+          {
+            bind = {
+              _args = ["Alt 1"];
+              _children = [{GoToTab = 1;} {SwitchToMode = "Normal";}];
+            };
+          }
+          {
+            bind = {
+              _args = ["Alt 2"];
+              _children = [{GoToTab = 2;} {SwitchToMode = "Normal";}];
+            };
+          }
+          {
+            bind = {
+              _args = ["Alt 3"];
+              _children = [{GoToTab = 3;} {SwitchToMode = "Normal";}];
+            };
+          }
+          {
+            bind = {
+              _args = ["Alt 4"];
+              _children = [{GoToTab = 4;} {SwitchToMode = "Normal";}];
+            };
+          }
+          {
+            bind = {
+              _args = ["Alt 5"];
+              _children = [{GoToTab = 5;} {SwitchToMode = "Normal";}];
+            };
+          }
+          {
+            bind = {
+              _args = ["Alt 6"];
+              _children = [{GoToTab = 6;} {SwitchToMode = "Normal";}];
+            };
+          }
+          {
+            bind = {
+              _args = ["Alt 7"];
+              _children = [{GoToTab = 7;} {SwitchToMode = "Normal";}];
+            };
+          }
+          {
+            bind = {
+              _args = ["Alt 8"];
+              _children = [{GoToTab = 8;} {SwitchToMode = "Normal";}];
+            };
+          }
+          {
+            bind = {
+              _args = ["Alt 9"];
+              _children = [{GoToTab = 9;} {SwitchToMode = "Normal";}];
+            };
+          }
+          {
+            bind = {
+              _args = ["Alt 0"];
+              _children = [{GoToTab = 10;} {SwitchToMode = "Normal";}];
+            };
+          }
+          # ── alt+ session layer (prefix-free) ──
+          # Zellij 0.44 dropped the "workspace" concept (was a tmux-style
+          # second layer above tabs). Sessions are now top-level — they're
+          # managed by the built-in `zellij:session-manager` plugin, which
+          # exposes create / rename / delete / switch in one floating UI.
+          # So each Alt+uppercase binding opens that plugin; the action
+          # inside the UI is chosen interactively, not from the binding.
+          {
+            bind = {
+              _args = ["Alt C"];
+              _children = [
+                {
+                  LaunchOrFocusPlugin = {
+                    _args = ["session-manager"];
+                    floating = true;
+                    move_to_focused_tab = true;
+                  };
+                }
+                {SwitchToMode = "Normal";}
+              ];
+            };
+          }
+          {
+            bind = {
+              _args = ["Alt R"];
+              _children = [
+                {
+                  LaunchOrFocusPlugin = {
+                    _args = ["session-manager"];
+                    floating = true;
+                    move_to_focused_tab = true;
+                  };
+                }
+                {SwitchToMode = "Normal";}
+              ];
+            };
+          }
+          {
+            bind = {
+              _args = ["Alt D"];
+              _children = [
+                {
+                  LaunchOrFocusPlugin = {
+                    _args = ["session-manager"];
+                    floating = true;
+                    move_to_focused_tab = true;
+                  };
+                }
+                {SwitchToMode = "Normal";}
+              ];
+            };
+          }
+          {
+            bind = {
+              _args = ["Alt N"];
+              _children = [
+                {
+                  LaunchOrFocusPlugin = {
+                    _args = ["session-manager"];
+                    floating = true;
+                    move_to_focused_tab = true;
+                  };
+                }
+                {SwitchToMode = "Normal";}
+              ];
+            };
+          }
+          {
+            bind = {
+              _args = ["Alt P"];
+              _children = [
+                {
+                  LaunchOrFocusPlugin = {
+                    _args = ["session-manager"];
+                    floating = true;
+                    move_to_focused_tab = true;
+                  };
+                }
+                {SwitchToMode = "Normal";}
+              ];
+            };
+          }
         ];
       };
 
       keybinds.tmux._children = [
+        {
+          unbind._args = [
+            "h"
+            "j"
+            "k"
+            "l"
+          ];
+        }
         {
           bind = {
             _args = ["v"];
@@ -223,6 +429,177 @@ in {
             _args = ["-"];
             _children = [
               {NewPane = "Down";}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["c"];
+            _children = [
+              {NewTab = {};}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["r"];
+            _children = [
+              {SwitchToMode = "RenameTab";}
+              {TabNameInput = 0;}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["d"];
+            _children = [
+              {CloseTab = {};}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["n"];
+            _children = [
+              {GoToNextTab = {};}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["p"];
+            _children = [
+              {GoToPreviousTab = {};}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["1"];
+            _children = [
+              {GoToTab = 1;}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["2"];
+            _children = [
+              {GoToTab = 2;}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["3"];
+            _children = [
+              {GoToTab = 3;}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["4"];
+            _children = [
+              {GoToTab = 4;}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["5"];
+            _children = [
+              {GoToTab = 5;}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["6"];
+            _children = [
+              {GoToTab = 6;}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["7"];
+            _children = [
+              {GoToTab = 7;}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["8"];
+            _children = [
+              {GoToTab = 8;}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["9"];
+            _children = [
+              {GoToTab = 9;}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["0"];
+            _children = [
+              {GoToTab = 10;}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["Left"];
+            _children = [
+              {MoveFocus = "Left";}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["Down"];
+            _children = [
+              {MoveFocus = "Down";}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["Up"];
+            _children = [
+              {MoveFocus = "Up";}
+              {SwitchToMode = "Normal";}
+            ];
+          };
+        }
+        {
+          bind = {
+            _args = ["Right"];
+            _children = [
+              {MoveFocus = "Right";}
               {SwitchToMode = "Normal";}
             ];
           };
