@@ -3,6 +3,18 @@
   fetchurl,
   fetchFromGitHub,
 }: {
+  herdr-remote = {
+    pname = "herdr-remote";
+    version = "5c51dbc5fc053ea1a851089584e2886a1fde148f";
+    src = fetchFromGitHub {
+      owner = "dcolinmorgan";
+      repo = "herdr-remote";
+      rev = "5c51dbc5fc053ea1a851089584e2886a1fde148f";
+      fetchSubmodules = false;
+      sha256 = "sha256-fwsPjQLJZrm5Xm5ttC3RNmoYF81ANt9Q660rrHmyCs0=";
+    };
+    date = "2026-07-09";
+  };
   tmux-fzf = {
     pname = "tmux-fzf";
     version = "05af76daa2487575b93a4f604693b00969f19c2f";

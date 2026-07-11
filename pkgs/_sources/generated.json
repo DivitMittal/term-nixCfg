@@ -1,4 +1,25 @@
 {
+    "herdr-remote": {
+        "cargoLock": null,
+        "date": "2026-07-09",
+        "extract": null,
+        "name": "herdr-remote",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "dcolinmorgan",
+            "repo": "herdr-remote",
+            "rev": "5c51dbc5fc053ea1a851089584e2886a1fde148f",
+            "sha256": "sha256-fwsPjQLJZrm5Xm5ttC3RNmoYF81ANt9Q660rrHmyCs0=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "5c51dbc5fc053ea1a851089584e2886a1fde148f"
+    },
     "tmux-fzf": {
         "cargoLock": null,
         "date": "2025-09-24",

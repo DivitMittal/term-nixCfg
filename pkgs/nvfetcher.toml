@@ -12,3 +12,10 @@ fetch.url = "https://github.com/cfal/zellij-vertical-tabs/releases/download/$ver
 [tmux-fzf]
 src.git = "https://github.com/sainnhe/tmux-fzf"
 fetch.github = "sainnhe/tmux-fzf"
+
+# No tagged releases; tracks master HEAD. herdr plugin installed declaratively
+# via xdg.dataFile + a herdr-plugin-link activation hook in
+# config/home/multiplexers/herdr.nix.
+[herdr-remote]
+src.git = "https://github.com/dcolinmorgan/herdr-remote"
+fetch.github = "dcolinmorgan/herdr-remote"
