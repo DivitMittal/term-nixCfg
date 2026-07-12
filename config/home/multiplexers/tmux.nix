@@ -1,9 +1,16 @@
 {
   pkgs,
   lib,
+  base16Scheme,
   ...
 }: let
   sources = pkgs.callPackage ../../../pkgs/_sources/generated.nix {};
+
+  # Map a base16 slot name (e.g. "base0C") to a "#RRGGBB" tmux color.
+  # Same palette source as wezterm/colors/cyberpunk.toml (home/wezterm.nix)
+  # and the zellij `cyberpunk` theme — keeps tmux chrome in sync with the
+  # rest of the terminal stack.
+  hex = name: "#${base16Scheme.${name}}";
 
   clipCmd =
     if pkgs.stdenv.hostPlatform.isDarwin
@@ -54,7 +61,10 @@ in {
       tmux-fzf # prefix+F fzf session/window/pane picker
     ];
 
-    extraConfig = ''
+    # lib.mkAfter so these `set -g` values win over the base16 styles stylix's
+    # tinted-tmux target sources (status-style bg=base00, …); tinted-tmux's
+    # non-status chrome (pane borders, message, clock) still applies.
+    extraConfig = lib.mkAfter ''
       # ── truecolor / terminal behaviour ──
       set -ga terminal-overrides ",*256col*:Tc"
       set -g allow-passthrough on
@@ -63,14 +73,21 @@ in {
       # ── prefix is C-a exclusively (set via home-manager option above) ──
       unbind C-b
 
-      # ── status line (static rewrite of the green/yellow oh-my-tmux theme) ──
+      # ── status line (cyberpunk base16, aligned with wezterm/zellij) ──
+      # Colors come from the shared base16Scheme via `hex` — same source as
+      # wezterm/colors/cyberpunk.toml and the zellij `cyberpunk` theme. Cyan
+      # (base0C) is the active accent, mirroring wezterm's active tab
+      # (bg=base02, fg=base0C) and zellij's ribbon_selected. `bg=default` keeps
+      # the bar compositing through wezterm's 0.85 window opacity.
       set -g status-position top
-      set -g status-style "bg=default,fg=#e4e4e4"
-      set -g status-left "#[fg=#080808,bg=#ffff00,bold] ❐ #S "
-      set -g status-right "#[fg=#ffffff,bg=#d70000] #(whoami) #[fg=#080808,bg=#e4e4e4] #H "
-      set -g window-status-format " #I #W "
-      set -g window-status-current-format " #I #W "
-      set -g window-status-current-style "fg=#000000,bg=#00ff00,bold"
+      set -g status-style "bg=default,fg=${hex "base05"}"
+      set -g window-status-style "bg=default,fg=${hex "base04"}"
+      set -g window-status-current-style "bg=${hex "base02"},fg=${hex "base0C"},bold"
+      set -g window-status-separator ""
+      set -g status-left "#[fg=${hex "base0C"},bg=${hex "base02"},bold] ❐ #S "
+      set -g status-right "#[fg=${hex "base04"}]#(whoami)@#H "
+      set -g window-status-format "#[fg=${hex "base04"}] #I #W "
+      set -g window-status-current-format "#[fg=${hex "base0C"},bg=${hex "base02"},bold] #I #W #[default]"
       set -g status-left-length 40
       set -g status-right-length 80
 
