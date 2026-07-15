@@ -84,7 +84,7 @@ in {
     (builtins.listToAttrs (map
       (file: {
         name = "wezterm/${file}";
-        value = {source = ../../emulators/wezterm + "/${file}";};
+        value = {source = ./emulators/wezterm + "/${file}";};
       })
       weztermFiles))
     // {

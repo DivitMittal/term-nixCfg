@@ -4,7 +4,7 @@
   base16Scheme,
   ...
 }: let
-  sources = pkgs.callPackage ../../../pkgs/_sources/generated.nix {};
+  sources = pkgs.callPackage ../../../../pkgs/_sources/generated.nix {};
 
   # Render a zellij theme from the same base16 palette that powers
   # wezterm/colors/cyberpunk.toml (home/wezterm.nix) and OS-nixCfg.

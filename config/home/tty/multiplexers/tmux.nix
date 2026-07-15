@@ -4,7 +4,7 @@
   base16Scheme,
   ...
 }: let
-  sources = pkgs.callPackage ../../../pkgs/_sources/generated.nix {};
+  sources = pkgs.callPackage ../../../../pkgs/_sources/generated.nix {};
 
   # Map a base16 slot name (e.g. "base0C") to a "#RRGGBB" tmux color.
   # Same palette source as wezterm/colors/cyberpunk.toml (home/wezterm.nix)

@@ -4,7 +4,7 @@
   config,
   ...
 }: let
-  sources = pkgs.callPackage ../../../pkgs/_sources/generated.nix {};
+  sources = pkgs.callPackage ../../../../pkgs/_sources/generated.nix {};
 
   # herdr-remote plugin (https://github.com/dcolinmorgan/herdr-remote) is
   # event-driven, not action-driven (its manifest has no [[actions]] block,

@@ -16,7 +16,8 @@ return function(wezterm, config)
   -- appearance
   config.window_close_confirmation = "AlwaysPrompt"
   -- Color scheme is rendered into $XDG_CONFIG_HOME/wezterm/colors/cyberpunk.toml
-  -- by OS-nixCfg (home/gui/emulators/wezterm.nix) from lib/palette.nix.
+  -- by config/home/gui/wezterm.nix (consuming the base16Scheme from
+  -- OS-nixCfg/lib/palette.nix).
   config.color_scheme = "cyberpunk"
   config.default_cursor_style = "SteadyBar"
   config.initial_cols = 100
