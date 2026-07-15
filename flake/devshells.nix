@@ -19,21 +19,21 @@
             ${config.pre-commit.installationScript}
           '';
         };
-        packages = lib.attrsets.attrValues {
-          inherit
-            (pkgs)
-            ### LSPs & Formatters
-            ## Nix
-            nixd
-            alejandra
-            ## Package management
-            nvfetcher
-            ## Lua
-            stylua
-            ## AI context
-            apm-cli
-            ;
-        };
+        packages =
+          lib.attrsets.attrValues {
+            inherit
+              (pkgs)
+              ### LSPs & Formatters
+              ## Nix
+              nixd
+              alejandra
+              ## Package management
+              nvfetcher
+              ## Lua
+              stylua
+              ;
+          }
+          ++ lib.optional (pkgs ? apm-cli) pkgs.apm-cli;
       };
       commands = [
         {
