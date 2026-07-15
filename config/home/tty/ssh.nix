@@ -39,6 +39,8 @@ in {
         Compression = false;
         AddKeysToAgent = "yes";
         HashKnownHosts = false;
+        ServerAliveInterval = 30;
+        ServerAliveCountMax = 3;
       };
     };
   };
