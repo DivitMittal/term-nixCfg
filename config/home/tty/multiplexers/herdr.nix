@@ -13,10 +13,21 @@
   herdrRemoteSrc = sources.herdr-remote.src;
   herdrRemoteId = "herdr-remote.relay"; # matches the id field in herdr-plugin.toml
 
-  # herdr's managed plugin directory is $XDG_DATA_HOME/herdr/plugins/github/<id>.
-  # The plugin must be linked into herdr's registry via `herdr plugin link` for
-  # the server to discover it; the activation hook below does that idempotently.
-  herdrRemoteLinkPath = "${config.xdg.dataHome}/herdr/plugins/github/${herdrRemoteId}";
+  # herdr-splits (https://github.com/lmilojevicc/herdr-splits.nvim) provides
+  # [[actions]] (`nav-left/right/up/down`, `resize-left/right/up/down`) and is
+  # also configured via herdr-plugin.toml. We install the source AND wire the
+  # herdr-side [[keys.command]] entries below so the keys are intercepted by
+  # herdr before they fall through to the foreground app.
+  herdrSplitsSrc = sources.herdr-splits.src;
+  herdrSplitsId = "herdr-splits"; # matches the id field in herdr-plugin.toml
+
+  # All herdr plugins installed declaratively: each one is placed under
+  # herdr's managed plugin directory ($XDG_DATA_HOME/herdr/plugins/github/<id>)
+  # and registered via `herdr plugin link` in the activation below.
+  herdrPluginIds = [herdrRemoteId herdrSplitsId];
+
+  # Resolves the on-disk path herdr expects for a given plugin id.
+  herdrPluginLinkPath = id: "${config.xdg.dataHome}/herdr/plugins/github/${id}";
 in {
   programs.herdr = {
     enable = true;
@@ -54,6 +65,72 @@ in {
       keys.cycle_pane_next = "prefix+tab";
       keys.cycle_pane_previous = "prefix+shift+tab";
 
+      # ── herdr-splits.nvim plugin actions ────────────────────────────────────
+      # Bindings use Ctrl+Arrow for nav and Alt+Arrow for resize — the same
+      # chord stack WezTerm smartSplits.lua, kitty, and Vim-Cfg
+      # smart-splits.nvim already use. The Neovim-side plugin
+      # (../Vim-Cfg/lua/plugins/misc.lua) is the primary handler when Neovim
+      # has focus inside a herdr pane; these herdr-side entries are the
+      # fallback for plain shells, mirroring the same role the prefix+arrows
+      # scheme plays in tmux/zellij for shells without a smart-splits
+      # companion.
+      #
+      # Caveat: terminals with their own Ctrl+Arrow bindings (WezTerm
+      # smartSplits.lua, kitty) catch the chord before herdr sees it, so
+      # these keys.command entries are most useful when running herdr inside
+      # a terminal that does NOT own those chords. For WezTerm/kitty panes
+      # the prefix+arrow scheme above remains the in-shell navigation path.
+      keys.command = [
+        {
+          key = "ctrl+left";
+          type = "plugin_action";
+          command = "herdr-splits.nav-left";
+          description = "Navigate left across splits (vim/herdr)";
+        }
+        {
+          key = "ctrl+down";
+          type = "plugin_action";
+          command = "herdr-splits.nav-down";
+          description = "Navigate down across splits (vim/herdr)";
+        }
+        {
+          key = "ctrl+up";
+          type = "plugin_action";
+          command = "herdr-splits.nav-up";
+          description = "Navigate up across splits (vim/herdr)";
+        }
+        {
+          key = "ctrl+right";
+          type = "plugin_action";
+          command = "herdr-splits.nav-right";
+          description = "Navigate right across splits (vim/herdr)";
+        }
+        {
+          key = "alt+left";
+          type = "plugin_action";
+          command = "herdr-splits.resize-left";
+          description = "Resize left across splits (vim/herdr)";
+        }
+        {
+          key = "alt+down";
+          type = "plugin_action";
+          command = "herdr-splits.resize-down";
+          description = "Resize down across splits (vim/herdr)";
+        }
+        {
+          key = "alt+up";
+          type = "plugin_action";
+          command = "herdr-splits.resize-up";
+          description = "Resize up across splits (vim/herdr)";
+        }
+        {
+          key = "alt+right";
+          type = "plugin_action";
+          command = "herdr-splits.resize-right";
+          description = "Resize right across splits (vim/herdr)";
+        }
+      ];
+
       theme.name = "terminal";
       terminal.shell_mode = "auto";
       ui.show_agent_labels_on_pane_borders = true;
@@ -62,17 +139,32 @@ in {
     };
   };
 
-  # Install herdr-remote declaratively:
-  #   1. Place the plugin source under herdr's managed plugin directory.
-  #   2. Run `herdr plugin link` so the server's registry knows about it.
-  # The link is idempotent: if herdr is already running and the plugin is
-  # already registered, the command exits 0 without changes.
-  xdg.dataFile."herdr/plugins/github/${herdrRemoteId}".source = herdrRemoteSrc;
+  # Install herdr plugins declaratively:
+  #   1. Place each plugin source under herdr's managed plugin directory.
+  #   2. Run `herdr plugin link` for each id so the server's registry knows
+  #      about them. The link is idempotent: if herdr is already running and
+  #      a plugin is already registered, the command exits 0 without changes.
+  xdg.dataFile = lib.listToAttrs (map
+    (id: {
+      name = "herdr/plugins/github/${id}";
+      value = {
+        source =
+          if id == herdrRemoteId
+          then herdrRemoteSrc
+          else if id == herdrSplitsId
+          then herdrSplitsSrc
+          else throw "unknown herdr plugin id: ${id}";
+      };
+    })
+    herdrPluginIds);
 
-  home.activation.linkHerdrRemote = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  home.activation.linkHerdrPlugins = lib.hm.dag.entryAfter ["writeBoundary"] ''
     # Skip silently on systems where herdr isn't on PATH (e.g., nix flake check
     # in a sandbox without /run/current-system).
     command -v herdr >/dev/null 2>&1 || exit 0
-    herdr plugin link '${herdrRemoteLinkPath}' 2>/dev/null || true
+    ${lib.concatMapStringsSep "\n" (id: ''
+        herdr plugin link '${herdrPluginLinkPath id}' 2>/dev/null || true
+      '')
+      herdrPluginIds}
   '';
 }
