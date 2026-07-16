@@ -3,14 +3,6 @@
 
   outputs = inputs: let
     inherit (inputs.flake-parts.lib) mkFlake;
-    # Nixpkgs 26.11 dropped x86_64-darwin only (aarch64-darwin is still
-    # supported on unstable). Pin x86_64-darwin to the 26.05-darwin branch
-    # (security-supported through end of 2026) and keep everything else on
-    # unstable. The flake-modules (devshell/treefmt/git-hooks/actions-nix)
-    # import `nixpkgs` from their own input, so their `follows` below also
-    # point at `nixpkgs-stable` — they always use stable regardless of
-    # system; user-side perSystem modules get the conditional pkgs via
-    # `_module.args.pkgs`.
     isX86Darwin = system: system == "x86_64-darwin";
   in
     mkFlake {inherit inputs;} ({inputs, ...}: {
@@ -22,38 +14,32 @@
       perSystem = {system, ...}: {
         _module.args.pkgs =
           if isX86Darwin system
-          then import inputs."nixpkgs-stable" {inherit system;}
+          then import inputs."nixpkgs-2605" {inherit system;}
           else import inputs.nixpkgs {inherit system;};
       };
     });
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    # Nixpkgs 26.11 dropped x86_64-darwin. Per-system `_module.args.pkgs`
-    # above picks this branch on darwin. Flake-modules (devshell/
-    # treefmt/git-hooks/actions-nix) import `nixpkgs` from their own
-    # input, so their `follows` below also point here so they evaluate
-    # successfully on darwin (they use stable everywhere — those are
-    # toolchain packages that don't differ much between stable/unstable).
-    "nixpkgs-stable".url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
+    "nixpkgs-2605".url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     flake-parts.url = "github:hercules-ci/flake-parts";
     systems.url = "github:nix-systems/default";
     devshell = {
       url = "github:numtide/devshell";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+      inputs.nixpkgs.follows = "nixpkgs-2605";
     };
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+      inputs.nixpkgs.follows = "nixpkgs-2605";
     };
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
+      inputs.nixpkgs.follows = "nixpkgs-2605";
     };
     actions-nix = {
       url = "github:nialov/actions.nix";
       inputs = {
-        nixpkgs.follows = "nixpkgs-stable";
+        nixpkgs.follows = "nixpkgs-2605";
         flake-parts.follows = "flake-parts";
         git-hooks.follows = "git-hooks";
       };
