@@ -14,8 +14,8 @@
       perSystem = {system, ...}: {
         _module.args.pkgs =
           if isX86Darwin system
-          then import inputs."nixpkgs-2605" {inherit system;}
-          else import inputs.nixpkgs {inherit system;};
+          then inputs."nixpkgs-2605".legacyPackages.${system}
+          else inputs.nixpkgs.legacyPackages.${system};
       };
     });
 
@@ -26,20 +26,20 @@
     systems.url = "github:nix-systems/default";
     devshell = {
       url = "github:numtide/devshell";
-      inputs.nixpkgs.follows = "nixpkgs-2605";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs-2605";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
-      inputs.nixpkgs.follows = "nixpkgs-2605";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     actions-nix = {
       url = "github:nialov/actions.nix";
       inputs = {
-        nixpkgs.follows = "nixpkgs-2605";
+        nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";
         git-hooks.follows = "git-hooks";
       };
