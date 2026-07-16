@@ -1,9 +1,12 @@
 return function(wezterm, config)
   local act = wezterm.action
 
+  -- Leader is Ctrl+b: matches the classic tmux default prefix and frees
+  -- Ctrl+r for shell reverse-i-search (the escape hatch below forwards
+  -- a literal Ctrl+b when you genuinely need it).
   config.leader = {
     mods = "CTRL",
-    key = "r",
+    key = "b",
     timeout_milliseconds = 800,
   }
   config.keys = {
@@ -18,11 +21,11 @@ return function(wezterm, config)
       key = "Enter",
       action = act.SendString "\x1b\r",
     },
-    -- Send Ctrl+r to the terminal when pressing LEADER, LEADER
+    -- Send Ctrl+b to the terminal when pressing LEADER, LEADER
     {
       mods = "LEADER|CTRL",
-      key = "r",
-      action = act.SendKey { mods = "CTRL", key = "r" },
+      key = "b",
+      action = act.SendKey { mods = "CTRL", key = "b" },
     },
 
     -- splitting

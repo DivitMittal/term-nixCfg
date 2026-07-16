@@ -46,13 +46,15 @@ in {
       # Consume the custom theme rendered below from the shared base16 palette.
       theme = "cyberpunk";
 
-      # ── leader = ctrl+r, mirroring wezterm binds.lua where ghostty has an
+      # ── leader = ctrl+b, mirroring wezterm binds.lua where ghostty has an
       #    equivalent action. Sequences use `>`; text bytes use Zig \xNN escapes.
+      #    Ctrl+B is the classic tmux default prefix; avoids stealing Ctrl+R
+      #    (shell reverse-history-search) the way Ctrl+R-leader would.
       keybind = [
-        "ctrl+r>ctrl+r=text:\\x12" # LEADER,LEADER → send literal Ctrl+r (0x12)
-        "ctrl+r>s=new_split:down" # LEADER s → split vertical   (wezterm SplitVertical)
-        "ctrl+r>v=new_split:right" # LEADER v → split horizontal (wezterm SplitHorizontal)
-        "ctrl+r>5=toggle_split_zoom" # LEADER 5 → zoom a single pane (wezterm TogglePaneZoomState)
+        "ctrl+b>ctrl+b=text:\\x02" # LEADER,LEADER → send literal Ctrl+b (0x02)
+        "ctrl+b>s=new_split:down" # LEADER s → split vertical   (wezterm SplitVertical)
+        "ctrl+b>v=new_split:right" # LEADER v → split horizontal (wezterm SplitHorizontal)
+        "ctrl+b>5=toggle_split_zoom" # LEADER 5 → zoom a single pane (wezterm TogglePaneZoomState)
       ];
     };
 
