@@ -20,6 +20,27 @@
         },
         "version": "5c51dbc5fc053ea1a851089584e2886a1fde148f"
     },
+    "herdr-splits": {
+        "cargoLock": null,
+        "date": "2026-07-15",
+        "extract": null,
+        "name": "herdr-splits",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "lmilojevicc",
+            "repo": "herdr-splits.nvim",
+            "rev": "19b9782c8d1941449bdb3376379adaa2444166a9",
+            "sha256": "sha256-Xl21R3ZcyWt7Q8/jzbnl8hhMXDPxLkizXUKj5YnlGyc=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "19b9782c8d1941449bdb3376379adaa2444166a9"
+    },
     "tmux-fzf": {
         "cargoLock": null,
         "date": "2025-09-24",

@@ -19,3 +19,13 @@ fetch.github = "sainnhe/tmux-fzf"
 [herdr-remote]
 src.git = "https://github.com/dcolinmorgan/herdr-remote"
 fetch.github = "dcolinmorgan/herdr-remote"
+
+# No tagged releases; tracks master HEAD. herdr plugin installed declaratively
+# via xdg.dataFile + a herdr-plugin-link activation hook in
+# config/home/multiplexers/herdr.nix. Companion Neovim plugin
+# (lmilojevicc/herdr-splits.nvim) is wired in
+# ../Vim-Cfg/lua/plugins/misc.lua with arrow-key nav/resize overrides
+# (matches the rest of the stack).
+[herdr-splits]
+src.git = "https://github.com/lmilojevicc/herdr-splits.nvim"
+fetch.github = "lmilojevicc/herdr-splits.nvim"

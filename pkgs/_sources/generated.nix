@@ -15,6 +15,18 @@
     };
     date = "2026-07-09";
   };
+  herdr-splits = {
+    pname = "herdr-splits";
+    version = "19b9782c8d1941449bdb3376379adaa2444166a9";
+    src = fetchFromGitHub {
+      owner = "lmilojevicc";
+      repo = "herdr-splits.nvim";
+      rev = "19b9782c8d1941449bdb3376379adaa2444166a9";
+      fetchSubmodules = false;
+      sha256 = "sha256-Xl21R3ZcyWt7Q8/jzbnl8hhMXDPxLkizXUKj5YnlGyc=";
+    };
+    date = "2026-07-15";
+  };
   tmux-fzf = {
     pname = "tmux-fzf";
     version = "05af76daa2487575b93a4f604693b00969f19c2f";
