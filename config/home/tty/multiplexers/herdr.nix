@@ -33,6 +33,10 @@ in {
     enable = true;
     package = pkgs.herdr;
     settings = {
+      # Suppress the first-run onboarding wizard; should_show_onboarding() defaults
+      # to true whenever this key is absent.
+      onboarding = false;
+
       keys.prefix = "ctrl+a";
 
       # Tab actions: mnemonic letter under the inner-mux prefix.
@@ -41,7 +45,7 @@ in {
       keys.close_tab = "prefix+d";
       keys.next_tab = "prefix+n";
       keys.previous_tab = "prefix+p";
-      keys.switch_tab = "prefix+1..9, prefix+0"; # 0 → tab 10
+      keys.switch_tab = "prefix+1..9"; # indexed bindings are 1..9 only — herdr has 9 slots, no slot 0/10
 
       # Workspace actions: shift marks the workspace scope.
       keys.new_workspace = "prefix+shift+c";
@@ -49,7 +53,7 @@ in {
       keys.close_workspace = "prefix+shift+d";
       keys.next_workspace = "prefix+shift+n";
       keys.previous_workspace = "prefix+shift+p";
-      keys.switch_workspace = "prefix+shift+1..9, prefix+shift+0"; # shift+0 → workspace 10
+      keys.switch_workspace = "prefix+shift+1..9"; # indexed bindings are 1..9 only
 
       # Agents are a herdr-only concept; they occupy the alt+1..9 chord that
       # tmux/zellij/screen use for prefix-free tab jumps. The tab-jump alt layer
