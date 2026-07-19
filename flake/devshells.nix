@@ -2,7 +2,14 @@
   inputs,
   lib,
   ...
-}: {
+}: let
+  customLib = {
+    mkUvxBin = pkgs: name: args:
+      pkgs.writeShellScriptBin name ''
+        exec ${pkgs.uv}/bin/uv tool run ${args} "$@"
+      '';
+  };
+in {
   imports = [inputs.devshell.flakeModule];
 
   perSystem = {
@@ -19,21 +26,21 @@
             ${config.pre-commit.installationScript}
           '';
         };
-        packages =
-          lib.attrsets.attrValues {
-            inherit
-              (pkgs)
-              ### LSPs & Formatters
-              ## Nix
-              nixd
-              alejandra
-              ## Package management
-              nvfetcher
-              ## Lua
-              stylua
-              ;
-          }
-          ++ lib.optional (pkgs ? apm-cli) pkgs.apm-cli;
+        packages = lib.attrsets.attrValues {
+          inherit
+            (pkgs)
+            ### LSPs & Formatters
+            ## Nix
+            nixd
+            alejandra
+            ## Package management
+            nvfetcher
+            ## Lua
+            stylua
+            ;
+          ## AI context
+          apm = customLib.mkUvxBin pkgs "apm" "--from apm-cli apm";
+        };
       };
       commands = [
         {
