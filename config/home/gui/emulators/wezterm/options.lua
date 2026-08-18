@@ -19,6 +19,23 @@ return function(wezterm, config)
   -- by config/home/gui/wezterm.nix (consuming the base16Scheme from
   -- OS-nixCfg/lib/palette.nix).
   config.color_scheme = "cyberpunk"
+  -- wezterm/wezterm#7574 (vertical tab bar), patched in via
+  -- term-nixCfg's wezterm.nix overlay until it merges upstream.
+  config.tab_bar_position = "Left"
+  config.tab_bar_width = 200
+  -- The fancy tab bar's own container background (the full-height strip
+  -- behind the stacked vertical tabs, also used by the horizontal fancy
+  -- bar) comes from window_frame.*_titlebar_bg, NOT colors.tab_bar.background
+  -- — that field is only read by the classic/retro tab bar renderer, which
+  -- vertical positions can't use since they force fancy mode on. Defaults to
+  -- an opaque #333333. window_frame is a top-level Config field, not part of
+  -- a named color scheme's Palette, so it can't live in cyberpunk.toml —
+  -- alpha-matched to window_background_opacity here instead, using the same
+  -- base00 (#000000) tab_bar background wezterm.nix renders into the scheme.
+  config.window_frame = {
+    active_titlebar_bg = "rgba(0, 0, 0, 0.85)",
+    inactive_titlebar_bg = "rgba(0, 0, 0, 0.85)",
+  }
   config.default_cursor_style = "SteadyBar"
   config.initial_cols = 100
   config.initial_rows = 40
