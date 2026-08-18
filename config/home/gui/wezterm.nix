@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   base16Scheme,
   ...
@@ -27,6 +28,43 @@
   # for the schema. ansi[0..7] / brights[0..7] follow the canonical
   # base16 → 16-color terminal mapping.
   hex = name: "#${base16Scheme.${name}}";
+
+  # WezTerm's `#`-prefixed color parser is a strict X11-style one (digit
+  # count must divide evenly by 3: #RGB/#RRGGBB/etc.) and rejects
+  # `#RRGGBBAA` outright — it errors before ever reaching the CSS-alpha
+  # fallback, so per-color alpha has to go through `rgba(r, g, b, a)`
+  # functional syntax instead. Used to alpha-match the vertical tab bar's
+  # background to window_background_opacity (0.85, set in options.lua and
+  # mirrored from OS-nixCfg lib/palette.nix `opacity.terminal`) so it
+  # blends with the translucent window instead of reading as a solid panel.
+  hexToRgba = name: alpha: let
+    h = lib.toLower base16Scheme.${name};
+    hexDigits = {
+      "0" = 0;
+      "1" = 1;
+      "2" = 2;
+      "3" = 3;
+      "4" = 4;
+      "5" = 5;
+      "6" = 6;
+      "7" = 7;
+      "8" = 8;
+      "9" = 9;
+      a = 10;
+      b = 11;
+      c = 12;
+      d = 13;
+      e = 14;
+      f = 15;
+    };
+    byte = pair: let
+      chars = lib.stringToCharacters pair;
+    in
+      hexDigits.${builtins.elemAt chars 0} * 16 + hexDigits.${builtins.elemAt chars 1};
+    r = byte (builtins.substring 0 2 h);
+    g = byte (builtins.substring 2 2 h);
+    b = byte (builtins.substring 4 2 h);
+  in "rgba(${toString r}, ${toString g}, ${toString b}, ${alpha})";
   cyberpunkToml = ''
     [colors]
     foreground      = "${hex "base05"}"
@@ -61,24 +99,24 @@
     ]
 
     [colors.tab_bar]
-    background          = "${hex "base00"}"
-    inactive_tab_edge   = "${hex "base02"}"
+    background          = "${hexToRgba "base00" "0.85"}"
+    inactive_tab_edge   = "${hexToRgba "base02" "0.85"}"
 
     [colors.tab_bar.active_tab]
-    bg_color = "${hex "base02"}"
+    bg_color = "${hexToRgba "base02" "0.85"}"
     fg_color = "${hex "base0C"}"
 
     [colors.tab_bar.inactive_tab]
-    bg_color = "${hex "base01"}"
+    bg_color = "${hexToRgba "base01" "0.85"}"
     fg_color = "${hex "base04"}"
 
     [colors.tab_bar.inactive_tab_hover]
-    bg_color = "${hex "base02"}"
+    bg_color = "${hexToRgba "base02" "0.85"}"
     fg_color = "${hex "base05"}"
     italic   = true
 
     [colors.tab_bar.new_tab]
-    bg_color = "${hex "base01"}"
+    bg_color = "${hexToRgba "base01" "0.85"}"
     fg_color = "${hex "base0C"}"
   '';
 
