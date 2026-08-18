@@ -3,6 +3,25 @@
   base16Scheme,
   ...
 }: let
+  # wezterm/wezterm#7574 adds `tab_bar_position`/`tab_bar_width` (Left/Right
+  # vertical tab bars), closing wezterm/wezterm#3537. Not merged upstream yet
+  # (open, mergeable=CONFLICTING against current main) — carry it as a patch
+  # on the pinned nixpkgs source until it lands. Verified the diff applies
+  # cleanly against nixpkgs' pinned wezterm rev (05343b3) and touches no
+  # Cargo.toml/Cargo.lock, so cargoHash doesn't need bumping. Drop this
+  # override (and the `pkgs.wezterm` swap on darwin below, which used to be
+  # `pkgs.brewCasks.wezterm`) once the PR merges and nixpkgs picks it up.
+  wezterm = pkgs.wezterm.overrideAttrs (old: {
+    patches =
+      (old.patches or [])
+      ++ [
+        (pkgs.fetchpatch {
+          url = "https://github.com/wezterm/wezterm/pull/7574.diff";
+          hash = "sha256-qYqJB0nYUKCXss9DcH9pAzhY05ffQMB/BDIeSkeJztc=";
+        })
+      ];
+  });
+
   # Render a wezterm color scheme TOML from the shared palette.
   # See https://wezterm.org/config/appearance.html#defining-your-own-colors
   # for the schema. ansi[0..7] / brights[0..7] follow the canonical
@@ -69,16 +88,13 @@
 in {
   programs.wezterm = {
     enable = true;
-    package =
-      if pkgs.stdenv.hostPlatform.isDarwin
-      then pkgs.brewCasks.wezterm
-      else pkgs.wezterm;
+    package = wezterm;
 
     enableBashIntegration = false;
     enableZshIntegration = false;
   };
 
-  home.packages = [pkgs.wezterm.terminfo];
+  home.packages = [wezterm.terminfo];
 
   xdg.configFile =
     (builtins.listToAttrs (map
