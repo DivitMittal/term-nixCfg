@@ -29,3 +29,11 @@ fetch.github = "dcolinmorgan/herdr-remote"
 [herdr-splits]
 src.git = "https://github.com/lmilojevicc/herdr-splits.nvim"
 fetch.github = "lmilojevicc/herdr-splits.nvim"
+
+# No tagged releases; tracks master HEAD. Not a wezterm.plugin.require
+# package (WezTerm's own plugin manager can't install it — it's also a
+# Claude Code plugin, installed by convention under ~/.claude/plugins/).
+# Vendored declaratively via xdg.dataFile in config/home/gui/wezterm.nix.
+[wezterm-agent-cards]
+src.git = "https://github.com/wrock/wezterm-agent-cards"
+fetch.github = "wrock/wezterm-agent-cards"

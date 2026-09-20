@@ -69,11 +69,36 @@ return function(wezterm, config)
       action = act.ActivateCopyMode,
     },
 
-    -- workspace chooser
+    -- workspace chooser/creator/rename now owned by workspacePicker.lua
+    -- (LEADER+W / LEADER+C / LEADER+R)
+
+    -- tab chooser/creator/rename: lowercase mirror of the workspace
+    -- bindings above, scoped to tabs instead of workspaces. Create is
+    -- LEADER+t (not the LEADER+c you'd expect from that mirror) because
+    -- LEADER+c is stack.wez's new-stacked-pane binding, in stackWez.lua.
     {
       mods = "LEADER",
       key = "w",
-      action = act.ShowLauncherArgs { flags = "WORKSPACES" },
+      action = act.ShowTabNavigator,
+    },
+
+    {
+      mods = "LEADER",
+      key = "t",
+      action = act.SpawnTab "CurrentPaneDomain",
+    },
+
+    {
+      mods = "LEADER",
+      key = "r",
+      action = act.PromptInputLine {
+        description = "Enter new name for tab",
+        action = wezterm.action_callback(function(window, _pane, line)
+          if line then
+            window:active_tab():set_title(line)
+          end
+        end),
+      },
     },
 
     -- C-S-l activates the debug overlay (implemented by default)

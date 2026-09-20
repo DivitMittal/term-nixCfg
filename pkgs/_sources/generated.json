@@ -62,6 +62,27 @@
         },
         "version": "05af76daa2487575b93a4f604693b00969f19c2f"
     },
+    "wezterm-agent-cards": {
+        "cargoLock": null,
+        "date": "2026-03-04",
+        "extract": null,
+        "name": "wezterm-agent-cards",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "wrock",
+            "repo": "wezterm-agent-cards",
+            "rev": "9e9b248fa64f7506bd031d081d21409bf494e5b2",
+            "sha256": "sha256-vOBVx5tHrUcxFmkuaHnd/klGIqurbKVBGKF2x3iUTCI=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "9e9b248fa64f7506bd031d081d21409bf494e5b2"
+    },
     "zellij-harpoon": {
         "cargoLock": null,
         "date": null,

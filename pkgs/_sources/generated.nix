@@ -39,6 +39,18 @@
     };
     date = "2025-09-24";
   };
+  wezterm-agent-cards = {
+    pname = "wezterm-agent-cards";
+    version = "9e9b248fa64f7506bd031d081d21409bf494e5b2";
+    src = fetchFromGitHub {
+      owner = "wrock";
+      repo = "wezterm-agent-cards";
+      rev = "9e9b248fa64f7506bd031d081d21409bf494e5b2";
+      fetchSubmodules = false;
+      sha256 = "sha256-vOBVx5tHrUcxFmkuaHnd/klGIqurbKVBGKF2x3iUTCI=";
+    };
+    date = "2026-03-04";
+  };
   zellij-harpoon = {
     pname = "zellij-harpoon";
     version = "v0.3.0";
