@@ -9,6 +9,9 @@
 result
 result-*
 
+## git worktrees for other local branches
+.worktrees/
+
 ## git pre-commit hooks (handled via cachix/git-hooks)
 .pre-commit-config.yaml
 
