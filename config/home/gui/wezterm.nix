@@ -1,4 +1,6 @@
 {
+  config,
+  lib,
   pkgs,
   base16Scheme,
   ...
@@ -71,11 +73,49 @@ in {
     enable = true;
     package =
       if pkgs.stdenv.hostPlatform.isDarwin
-      then pkgs.brewCasks.wezterm
+      # The real nightly build is installed by the `homebrew.casks` entry below
+      # (home-manager-brew, real `brew bundle install`) — Homebrew's cask for it
+      # sets `sha256 :no_check` (content changes on every nightly build with no
+      # version bump), which a Nix fixed-output derivation can never verify, so
+      # it can't be built as a Nix package at all (brew-nix's `pkgs.brewCasks`
+      # just emits an unbuildable placeholder hash for it). This is only here
+      # to satisfy `programs.wezterm`'s package option/`home.packages` entry
+      # without shadowing the brew-installed nightly binaries on PATH.
+      then pkgs.emptyDirectory
       else pkgs.wezterm;
 
     enableBashIntegration = false;
     enableZshIntegration = false;
+  };
+
+  # Installs the real nightly cask via `brew bundle` at activation (home-manager-brew),
+  # sidestepping the Nix fixed-output-hash problem above entirely. Puts the app at
+  # /Applications/WezTerm.app and binaries (wezterm, wezterm-gui, wezterm-mux-server)
+  # on PATH via Homebrew's own shims once shell integration runs `brew shellenv`.
+  # "wezterm" (stable) cask is frozen at the last stable tag (20240203-110809);
+  # upstream has shipped only rolling nightlies since, so track those instead to
+  # pick up 2+ years of fixes.
+  homebrew.casks = lib.optionals pkgs.stdenv.hostPlatform.isDarwin ["wezterm@nightly"];
+
+  # Pre-starts the local-mux unix domain server (options.lua) at login so the
+  # socket is already listening and warm before the GUI is ever launched —
+  # otherwise wezterm-gui spawns it lazily on first connect, adding a fork +
+  # bind to the critical path of opening the terminal. Runs in foreground
+  # (no --daemonize) since launchd, not the process itself, owns supervision
+  # and restart-on-crash via KeepAlive. Path is the cask's app bundle rather
+  # than the Homebrew shim, since the shim's prefix (/usr/local vs
+  # /opt/homebrew) depends on host architecture but the app bundle path
+  # doesn't.
+  launchd.agents.wezterm-mux-server = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+    enable = true;
+    config = {
+      ProgramArguments = ["/Applications/WezTerm.app/Contents/MacOS/wezterm-mux-server"];
+      RunAtLoad = true;
+      KeepAlive = true;
+      ProcessType = "Background";
+      StandardOutPath = "${config.xdg.cacheHome}/wezterm-mux-server.log";
+      StandardErrorPath = "${config.xdg.cacheHome}/wezterm-mux-server.log";
+    };
   };
 
   home.packages = [pkgs.wezterm.terminfo];

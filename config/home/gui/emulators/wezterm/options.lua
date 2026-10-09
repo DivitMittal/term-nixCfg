@@ -29,10 +29,32 @@ return function(wezterm, config)
     bottom = 0,
   }
   config.native_macos_fullscreen_mode = false
+
+  -- Local unix-domain mux server: panes survive a WezTerm GUI crash/quit
+  -- and are recovered when it's relaunched (a host reboot still loses
+  -- them). default_gui_startup_args makes the default launch attach to
+  -- this domain instead of a GUI-local-only pty. Pair with sessions.lua
+  -- (wezterm-sessions) for save/restore across a full restart.
+  -- "local" is a reserved built-in domain name and cannot be redefined.
+  config.unix_domains = {
+    { name = "local-mux" },
+  }
+  config.default_gui_startup_args = { "connect", "local-mux" }
+  -- The mux protocol renders panes via server-side screen diffs rather than
+  -- a raw pty passthrough, so fast full-redraw TUIs (btop, yazi) can arrive
+  -- as partial frames and show stale/garbled state. Bumping this batches
+  -- pty reads into more complete frames before diffing (default 3ms).
+  config.mux_output_parser_coalesce_delay_ms = 15
   -- Matches stylix.opacity.terminal in OS-nixCfg/lib/palette.nix.
   config.window_background_opacity = 0.85
   config.window_decorations = "RESIZE"
   config.enable_scroll_bar = false
+  config.max_fps = 60
+  config.animation_fps = 1
+  config.front_end = "WebGpu"
+  config.webgpu_power_preference = "HighPerformance"
+  config.check_for_updates = false
+  config.scrollback_lines = 1000
 
   -- hyperlink
   config.hyperlink_rules = {
