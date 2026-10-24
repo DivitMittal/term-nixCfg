@@ -53,5 +53,8 @@
     # Kolu terminal multiplexer — supplies the services.kolu HM module + package
     # (see config/home/multiplexers/kolu.nix).
     kolu.url = "github:juspay/kolu";
+    # WezTerm nightly for Linux (see config/home/gui/wezterm.nix). Its nixpkgs
+    # isn't followed so builds match what upstream CI pushes to wezterm.cachix.
+    wezterm.url = "github:wez/wezterm?dir=nix";
   };
 }

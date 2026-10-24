@@ -1,8 +1,13 @@
 {
+  lib,
+  options,
   pkgs,
+  termInputs,
   base16Scheme,
   ...
 }: let
+  inherit (pkgs.stdenv.hostPlatform) isDarwin system;
+
   # Render a wezterm color scheme TOML from the shared palette.
   # See https://wezterm.org/config/appearance.html#defining-your-own-colors
   # for the schema. ansi[0..7] / brights[0..7] follow the canonical
@@ -67,31 +72,43 @@
   # the nix-generated colors/cyberpunk.toml can coexist without conflicts.
   weztermFiles = ["binds.lua" "options.lua" "smartSplits.lua" "tabline.lua" "wezterm.lua"];
 in {
-  programs.wezterm = {
-    enable = true;
-    package =
-      if pkgs.stdenv.hostPlatform.isDarwin
-      then pkgs.brewCasks.wezterm
-      else pkgs.wezterm;
+  config = lib.mkMerge [
+    {
+      ## Nightly everywhere. Linux uses the upstream flake; macOS uses the
+      ## wezterm@nightly cask, since the flake would compile from source there
+      ## (wezterm.cachix only has x86_64-linux) and the cask's unversioned download
+      ## can't be hash-pinned by brew-nix.
+      programs.wezterm = {
+        enable = !isDarwin;
+        package = termInputs.wezterm.packages.${system}.default;
 
-    enableBashIntegration = false;
-    enableZshIntegration = false;
-  };
+        enableBashIntegration = false;
+        enableZshIntegration = false;
+      };
 
-  home.packages = [pkgs.wezterm.terminfo];
+      ## The flake package already propagates its terminfo; the cask doesn't
+      home.packages = lib.optional isDarwin pkgs.wezterm.terminfo;
 
-  xdg.configFile =
-    (builtins.listToAttrs (map
-      (file: {
-        name = "wezterm/${file}";
-        value = {source = ./emulators/wezterm + "/${file}";};
-      })
-      weztermFiles))
-    // {
-      # Wezterm autoloads color schemes from $XDG_CONFIG_HOME/wezterm/colors/*.toml.
-      # Referenced by `config.color_scheme = "cyberpunk"` in options.lua.
-      # NOTE: window opacity is mirrored in upstream options.lua; keep it in
-      # sync with OS-nixCfg lib/palette.nix `opacity.terminal` (currently 0.85).
-      "wezterm/colors/cyberpunk.toml".text = cyberpunkToml;
-    };
+      xdg.configFile =
+        (builtins.listToAttrs (map
+          (file: {
+            name = "wezterm/${file}";
+            value = {source = ./emulators/wezterm + "/${file}";};
+          })
+          weztermFiles))
+        // {
+          # Wezterm autoloads color schemes from $XDG_CONFIG_HOME/wezterm/colors/*.toml.
+          # Referenced by `config.color_scheme = "cyberpunk"` in options.lua.
+          # NOTE: window opacity is mirrored in upstream options.lua; keep it in
+          # sync with OS-nixCfg lib/palette.nix `opacity.terminal` (currently 0.85).
+          "wezterm/colors/cyberpunk.toml".text = cyberpunkToml;
+        };
+    }
+
+    ## Homebrew comes from the consumer's home-manager-brew module (OS-nixCfg's
+    ## common/home/brew.nix); skip it when that module isn't imported
+    (lib.optionalAttrs (options ? homebrew.casks) {
+      homebrew.casks = lib.mkIf isDarwin ["wezterm@nightly"];
+    })
+  ];
 }
