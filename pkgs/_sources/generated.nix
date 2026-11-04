@@ -3,6 +3,22 @@
   fetchurl,
   fetchFromGitHub,
 }: {
+  herdr-aarch64-darwin = {
+    pname = "herdr-aarch64-darwin";
+    version = "v0.9.5";
+    src = fetchurl {
+      url = "https://github.com/ogulcancelik/herdr/releases/download/v0.9.5/herdr-macos-aarch64";
+      sha256 = "sha256-+3fCIyoFqANUITgsiUOS9BdOTjihjkivPdApAVfDp+I=";
+    };
+  };
+  herdr-aarch64-linux = {
+    pname = "herdr-aarch64-linux";
+    version = "v0.9.5";
+    src = fetchurl {
+      url = "https://github.com/ogulcancelik/herdr/releases/download/v0.9.5/herdr-linux-aarch64";
+      sha256 = "sha256-F9dTby2lCFlSNoDvJ53/ysjkojX05G/o2mwuxEFBiXw=";
+    };
+  };
   herdr-remote = {
     pname = "herdr-remote";
     version = "051f6e6d7b9ca22d0fc05f125a486546b907659c";
@@ -26,6 +42,22 @@
       sha256 = "sha256-6dbqUdNyHV+6BJLQduR7oFZzPrjL6wlw8EE7N6kDqOo=";
     };
     date = "2026-11-11";
+  };
+  herdr-x86_64-darwin = {
+    pname = "herdr-x86_64-darwin";
+    version = "v0.9.5";
+    src = fetchurl {
+      url = "https://github.com/ogulcancelik/herdr/releases/download/v0.9.5/herdr-macos-x86_64";
+      sha256 = "sha256-X7CpCOx/Z0Xj4kVziwa/rVbEY5HDkas8CVX76tAfE2k=";
+    };
+  };
+  herdr-x86_64-linux = {
+    pname = "herdr-x86_64-linux";
+    version = "v0.9.5";
+    src = fetchurl {
+      url = "https://github.com/ogulcancelik/herdr/releases/download/v0.9.5/herdr-linux-x86_64";
+      sha256 = "sha256-FNnovItKngEY13wyJm921GHwm0A0LrI3UpYL2J9Zkp0=";
+    };
   };
   tmux-fzf = {
     pname = "tmux-fzf";

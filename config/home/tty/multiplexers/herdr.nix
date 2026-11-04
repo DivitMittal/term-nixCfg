@@ -6,6 +6,33 @@
 }: let
   sources = pkgs.callPackage ../../../../pkgs/_sources/generated.nix {};
 
+  # Upstream ships raw prebuilt executables per platform. nixpkgs' herdr is a
+  # source build that lags several minor versions behind, and the plugin
+  # wiring below (`herdr plugin link`, `plugin_action` keys) needs a recent
+  # release.
+  inherit (pkgs.stdenvNoCC.hostPlatform) system;
+  herdrSrc =
+    sources."herdr-${system}"
+    or (throw "herdr: no prebuilt release binary for ${system}");
+  herdrBin = pkgs.stdenvNoCC.mkDerivation {
+    pname = "herdr";
+    version = lib.removePrefix "v" herdrSrc.version;
+    inherit (herdrSrc) src;
+    dontUnpack = true;
+    installPhase = ''
+      runHook preInstall
+      install -Dm755 "$src" "$out/bin/herdr"
+      runHook postInstall
+    '';
+    meta = {
+      description = "Terminal multiplexer for coding agents";
+      homepage = "https://herdr.dev";
+      mainProgram = "herdr";
+      platforms = ["x86_64-darwin" "aarch64-darwin" "x86_64-linux" "aarch64-linux"];
+      sourceProvenance = [lib.sourceTypes.binaryNativeCode];
+    };
+  };
+
   # herdr-remote plugin (https://github.com/dcolinmorgan/herdr-remote) is
   # event-driven, not action-driven (its manifest has no [[actions]] block,
   # only an [[events]] handler for pane.agent_status_changed). It's enough to
@@ -31,7 +58,7 @@
 in {
   programs.herdr = {
     enable = true;
-    package = pkgs.herdr;
+    package = herdrBin;
     settings = {
       # Suppress the first-run onboarding wizard; should_show_onboarding() defaults
       # to true whenever this key is absent.

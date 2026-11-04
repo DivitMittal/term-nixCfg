@@ -1,4 +1,34 @@
 {
+    "herdr-aarch64-darwin": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "herdr-aarch64-darwin",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-+3fCIyoFqANUITgsiUOS9BdOTjihjkivPdApAVfDp+I=",
+            "type": "url",
+            "url": "https://github.com/ogulcancelik/herdr/releases/download/v0.9.5/herdr-macos-aarch64"
+        },
+        "version": "v0.9.5"
+    },
+    "herdr-aarch64-linux": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "herdr-aarch64-linux",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-F9dTby2lCFlSNoDvJ53/ysjkojX05G/o2mwuxEFBiXw=",
+            "type": "url",
+            "url": "https://github.com/ogulcancelik/herdr/releases/download/v0.9.5/herdr-linux-aarch64"
+        },
+        "version": "v0.9.5"
+    },
     "herdr-remote": {
         "cargoLock": null,
         "date": "2026-11-02",
@@ -40,6 +70,36 @@
             "type": "github"
         },
         "version": "4556fc0e7d4895fd8c86a1727dd9104c39e6e7d4"
+    },
+    "herdr-x86_64-darwin": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "herdr-x86_64-darwin",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-X7CpCOx/Z0Xj4kVziwa/rVbEY5HDkas8CVX76tAfE2k=",
+            "type": "url",
+            "url": "https://github.com/ogulcancelik/herdr/releases/download/v0.9.5/herdr-macos-x86_64"
+        },
+        "version": "v0.9.5"
+    },
+    "herdr-x86_64-linux": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "herdr-x86_64-linux",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-FNnovItKngEY13wyJm921GHwm0A0LrI3UpYL2J9Zkp0=",
+            "type": "url",
+            "url": "https://github.com/ogulcancelik/herdr/releases/download/v0.9.5/herdr-linux-x86_64"
+        },
+        "version": "v0.9.5"
     },
     "tmux-fzf": {
         "cargoLock": null,
