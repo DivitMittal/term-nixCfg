@@ -38,9 +38,10 @@ in {
         IdentityFile = "${sshDir}/agenix/id_ed25519";
       };
       # termux-launcher (nix-on-droid fork); its sshd trusts the home-lab key.
-      # Android apps run as one UID, so any user name is accepted.
+      # Non-interactive commands get no PATH: wrap them in `$SHELL -lc`.
       "M1" = {
         HostName = "192.168.2.7";
+        User = "nix-on-droid";
         Port = 8022;
         IdentityFile = "${sshDir}/agenix/id_ed25519";
       };
