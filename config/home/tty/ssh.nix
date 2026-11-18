@@ -16,10 +16,33 @@ in {
     enableDefaultConfig = false;
 
     settings = {
-      "10.254.200.59" = {
-        User = "nix-on-droid";
+      # Home LAN (infra-nixCfg). router, T1, MON1, L2 and M1 have fixed
+      # addresses; T2 and T3 are still on dynamic (but long-lived) leases.
+      "router" = {
+        HostName = "192.168.2.1";
+        User = "root";
+        IdentityFile = "${sshDir}/github/id_ed25519";
+      };
+      "T1 T2 T3 MON1" = {
+        User = "root";
+        IdentityFile = "${sshDir}/agenix/id_ed25519";
+      };
+      "T1".HostName = "192.168.2.3";
+      "T2".HostName = "192.168.2.171";
+      "T3".HostName = "192.168.2.106";
+      "MON1".HostName = "192.168.2.5";
+      # L2's Windows boot (OpenSSH Server).
+      "L2" = {
+        HostName = "192.168.2.6";
+        User = "vanee";
+        IdentityFile = "${sshDir}/agenix/id_ed25519";
+      };
+      # termux-launcher (nix-on-droid fork); its sshd trusts the home-lab key.
+      # Android apps run as one UID, so any user name is accepted.
+      "M1" = {
+        HostName = "192.168.2.7";
         Port = 8022;
-        IdentityFile = "${sshDir}/nix-on-droid/ssh_host_rsa_key";
+        IdentityFile = "${sshDir}/agenix/id_ed25519";
       };
       "M1-adb" = {
         HostName = "127.0.0.1";
