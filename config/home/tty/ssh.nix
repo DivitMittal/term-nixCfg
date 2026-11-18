@@ -37,13 +37,12 @@ in {
         User = "vanee";
         IdentityFile = "${sshDir}/agenix/id_ed25519";
       };
-      # nix-on-droid's sshd (`sshd-start` in the app) trusts its own host key,
-      # a copy of which lives here.
+      # termux-launcher (nix-on-droid fork); its sshd trusts the home-lab key.
+      # Android apps run as one UID, so any user name is accepted.
       "M1" = {
         HostName = "192.168.2.7";
-        User = "nix-on-droid";
         Port = 8022;
-        IdentityFile = "${sshDir}/nix-on-droid/ssh_host_rsa_key";
+        IdentityFile = "${sshDir}/agenix/id_ed25519";
       };
       "M1-adb" = {
         HostName = "127.0.0.1";
