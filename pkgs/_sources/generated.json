@@ -1,7 +1,7 @@
 {
     "herdr-remote": {
         "cargoLock": null,
-        "date": "2026-10-08",
+        "date": "2026-11-02",
         "extract": null,
         "name": "herdr-remote",
         "passthru": null,
@@ -13,16 +13,16 @@
             "name": null,
             "owner": "dcolinmorgan",
             "repo": "herdr-remote",
-            "rev": "bb70162eb6d3ab6413974b14cdd7f3763f14a38c",
-            "sha256": "sha256-bbsZfOIFjKWFOiVjettZcUykVVuGRc/9Y5rSqKPorsY=",
+            "rev": "051f6e6d7b9ca22d0fc05f125a486546b907659c",
+            "sha256": "sha256-tXkN15Y2wQUA9DXR6OeWorYZh67BkG3efiotWjfD908=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "bb70162eb6d3ab6413974b14cdd7f3763f14a38c"
+        "version": "051f6e6d7b9ca22d0fc05f125a486546b907659c"
     },
     "herdr-splits": {
         "cargoLock": null,
-        "date": "2026-08-17",
+        "date": "2026-11-11",
         "extract": null,
         "name": "herdr-splits",
         "passthru": null,
@@ -34,16 +34,16 @@
             "name": null,
             "owner": "lmilojevicc",
             "repo": "herdr-splits.nvim",
-            "rev": "94f30cf4e9ac76ddf185a3acd0977be728fa4106",
-            "sha256": "sha256-7rHAPSjd2n16FGOcqI/1KNHl1yCmMOVVwiJl/eEU9n8=",
+            "rev": "4556fc0e7d4895fd8c86a1727dd9104c39e6e7d4",
+            "sha256": "sha256-6dbqUdNyHV+6BJLQduR7oFZzPrjL6wlw8EE7N6kDqOo=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "94f30cf4e9ac76ddf185a3acd0977be728fa4106"
+        "version": "4556fc0e7d4895fd8c86a1727dd9104c39e6e7d4"
     },
     "tmux-fzf": {
         "cargoLock": null,
-        "date": "2026-08-10",
+        "date": "2026-10-17",
         "extract": null,
         "name": "tmux-fzf",
         "passthru": null,
@@ -55,12 +55,12 @@
             "name": null,
             "owner": "sainnhe",
             "repo": "tmux-fzf",
-            "rev": "e5f427e9dcf180ca92e2f8af47ba07f644fd4585",
-            "sha256": "sha256-VikPQHZMZroL77k+j1MSq9XwzOu35mYXYU9x2pqHDks=",
+            "rev": "2839d6bd0e13b7c5e385e131e4c217917fa73555",
+            "sha256": "sha256-UmeqY6qzGpyU64VcSfTIGJLw/l1MrAzWo0G/Lnqy1Ks=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "e5f427e9dcf180ca92e2f8af47ba07f644fd4585"
+        "version": "2839d6bd0e13b7c5e385e131e4c217917fa73555"
     },
     "zellij-harpoon": {
         "cargoLock": null,
@@ -71,11 +71,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-f4z1enHx27vRFTN6MWOHgNfhjpuHbe8cgclwGIyqMvI=",
+            "sha256": "sha256-ve6s1V4CNVIxnqf0vQe+95A7JmZm9RP26W9jCG3AuqY=",
             "type": "url",
-            "url": "https://github.com/Nacho114/harpoon/releases/download/v0.3.0/harpoon.wasm"
+            "url": "https://github.com/Nacho114/harpoon/releases/download/v0.3.1/harpoon.wasm"
         },
-        "version": "v0.3.0"
+        "version": "v0.3.1"
     },
     "zellij-vertical-tabs": {
         "cargoLock": null,
