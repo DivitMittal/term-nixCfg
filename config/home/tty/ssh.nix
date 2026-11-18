@@ -16,7 +16,31 @@ in {
     enableDefaultConfig = false;
 
     settings = {
-      "10.254.200.59" = {
+      # Home LAN (infra-nixCfg). router, T1, MON1, L2 and M1 have fixed
+      # addresses; T2 and T3 are still on dynamic (but long-lived) leases.
+      "router" = {
+        HostName = "192.168.2.1";
+        User = "root";
+        IdentityFile = "${sshDir}/github/id_ed25519";
+      };
+      "T1 T2 T3 MON1" = {
+        User = "root";
+        IdentityFile = "${sshDir}/agenix/id_ed25519";
+      };
+      "T1".HostName = "192.168.2.3";
+      "T2".HostName = "192.168.2.171";
+      "T3".HostName = "192.168.2.106";
+      "MON1".HostName = "192.168.2.5";
+      # L2's Windows boot (OpenSSH Server).
+      "L2" = {
+        HostName = "192.168.2.6";
+        User = "vanee";
+        IdentityFile = "${sshDir}/agenix/id_ed25519";
+      };
+      # nix-on-droid's sshd (`sshd-start` in the app) trusts its own host key,
+      # a copy of which lives here.
+      "M1" = {
+        HostName = "192.168.2.7";
         User = "nix-on-droid";
         Port = 8022;
         IdentityFile = "${sshDir}/nix-on-droid/ssh_host_rsa_key";
