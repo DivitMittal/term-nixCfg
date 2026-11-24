@@ -31,7 +31,24 @@
 in {
   programs.herdr = {
     enable = true;
-    package = pkgs.herdr;
+    # herdr needs Zig 0.16, which nixpkgs does not build for x86_64-darwin.
+    # The upstream release ships a native binary for that platform.
+    package =
+      if pkgs.stdenvNoCC.hostPlatform.system == "x86_64-darwin"
+      then
+        pkgs.stdenvNoCC.mkDerivation {
+          pname = "herdr";
+          version = "0.9.5";
+          src = pkgs.fetchurl {
+            url = "https://github.com/herdrdev/herdr/releases/download/v0.9.5/herdr-macos-x86_64";
+            hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+          };
+          dontUnpack = true;
+          installPhase = ''
+            install -Dm755 $src $out/bin/herdr
+          '';
+        }
+      else pkgs.herdr;
     settings = {
       # Suppress the first-run onboarding wizard; should_show_onboarding() defaults
       # to true whenever this key is absent.
