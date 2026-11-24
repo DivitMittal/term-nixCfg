@@ -29,3 +29,23 @@ fetch.github = "dcolinmorgan/herdr-remote"
 [herdr-splits]
 src.git = "https://github.com/lmilojevicc/herdr-splits.nvim"
 fetch.github = "lmilojevicc/herdr-splits.nvim"
+
+# herdr — prebuilt release binaries (raw executables, no archive), one entry
+# per platform. nixpkgs lags far behind upstream and builds from source; the
+# plugin system used in config/home/tty/multiplexers/herdr.nix needs a recent
+# release. Assets are named herdr-<os>-<arch>.
+[herdr-x86_64-darwin]
+src.github = "ogulcancelik/herdr"
+fetch.url = "https://github.com/ogulcancelik/herdr/releases/download/$ver/herdr-macos-x86_64"
+
+[herdr-aarch64-darwin]
+src.github = "ogulcancelik/herdr"
+fetch.url = "https://github.com/ogulcancelik/herdr/releases/download/$ver/herdr-macos-aarch64"
+
+[herdr-x86_64-linux]
+src.github = "ogulcancelik/herdr"
+fetch.url = "https://github.com/ogulcancelik/herdr/releases/download/$ver/herdr-linux-x86_64"
+
+[herdr-aarch64-linux]
+src.github = "ogulcancelik/herdr"
+fetch.url = "https://github.com/ogulcancelik/herdr/releases/download/$ver/herdr-linux-aarch64"
