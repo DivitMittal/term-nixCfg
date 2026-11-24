@@ -165,12 +165,13 @@ in {
     })
     herdrPluginIds);
 
+  # Call herdr by its store path: home-manager's activation sets its own PATH,
+  # which never includes the profile herdr is installed to. And no `exit`:
+  # every activation entry runs in one script, so exiting here would skip all
+  # later entries, launch agents and systemd units included.
   home.activation.linkHerdrPlugins = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    # Skip silently on systems where herdr isn't on PATH (e.g., nix flake check
-    # in a sandbox without /run/current-system).
-    command -v herdr >/dev/null 2>&1 || exit 0
     ${lib.concatMapStringsSep "\n" (id: ''
-        herdr plugin link '${herdrPluginLinkPath id}' 2>/dev/null || true
+        ${lib.getExe config.programs.herdr.package} plugin link '${herdrPluginLinkPath id}' 2>/dev/null || true
       '')
       herdrPluginIds}
   '';
