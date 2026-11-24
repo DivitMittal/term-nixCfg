@@ -41,12 +41,13 @@ in {
           version = "0.9.5";
           src = pkgs.fetchurl {
             url = "https://github.com/herdrdev/herdr/releases/download/v0.9.5/herdr-macos-x86_64";
-            hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+            hash = "sha256-X7CpCOx/Z0Xj4kVziwa/rVbEY5HDkas8CVX76tAfE2k=";
           };
           dontUnpack = true;
           installPhase = ''
             install -Dm755 $src $out/bin/herdr
           '';
+          meta.mainProgram = "herdr";
         }
       else pkgs.herdr;
     settings = {
