@@ -39,17 +39,22 @@ in {
       };
       # termux-launcher (nix-on-droid fork); its sshd trusts the home-lab key.
       # Non-interactive commands get no PATH: wrap them in `$SHELL -lc`.
+      # Both entries use the home-lab key, which is what M1's sshd authorizes
+      # (infra-nixCfg common/hosts/droid/ssh.nix).
       "M1" = {
         HostName = "192.168.2.7";
         User = "nix-on-droid";
         Port = 8022;
         IdentityFile = "${sshDir}/agenix/id_ed25519";
+        IdentitiesOnly = "yes";
       };
+      # Over USB, after `adb forward tcp:18022 tcp:8022` (m1-adb-forward).
       "M1-adb" = {
         HostName = "127.0.0.1";
         User = "nix-on-droid";
         Port = 18022;
-        IdentityFile = "${sshDir}/nix-on-droid/ssh_host_rsa_key";
+        IdentityFile = "${sshDir}/agenix/id_ed25519";
+        IdentitiesOnly = "yes";
         HostKeyAlias = "M1-adb";
         CheckHostIP = "no";
       };
