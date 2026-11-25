@@ -29,7 +29,7 @@ in {
       };
       "T1".HostName = "192.168.2.3";
       "T2".HostName = "192.168.2.171";
-      "T3".HostName = "192.168.2.106";
+      "T3".HostName = "192.168.2.8";
       "MON1".HostName = "192.168.2.5";
       # L2's Windows boot (OpenSSH Server).
       "L2" = {
