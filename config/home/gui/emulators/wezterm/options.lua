@@ -13,6 +13,26 @@ return function(wezterm, config)
     "liga=1",
   }
 
+  -- Default domain: L2W WSL (new tabs/panes go straight to NixOS-WSL).
+  config.default_domain = "WSL"
+
+  -- WSL domain: local WSL2 NixOS distro on this MacBook.
+  config.wsl_domains = {
+    {
+      name = "WSL";
+      username = "vanee";
+    },
+  }
+
+  -- SSH domain: L2W when this MacBook is in Windows boot.
+  config.ssh_domains = {
+    {
+      name = "L2W";
+      host_address = "192.168.2.6";
+      username = "vanee";
+    },
+  }
+
   -- appearance
   config.window_close_confirmation = "AlwaysPrompt"
   -- Color scheme is rendered into $XDG_CONFIG_HOME/wezterm/colors/cyberpunk.toml
